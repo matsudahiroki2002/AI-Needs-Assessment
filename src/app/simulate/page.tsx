@@ -1,6 +1,6 @@
 /**
- * @file Simulation page enabling A/B/C comparisons for ideas.
- * @remarks Keeps business logic minimal to allow backend models to plug in with identical payloads.
+ * @file Simulation page enabling persona-driven scoring for product ideas.
+ * @remarks Aggregates GPT reactions across registered personas to surface PSF / PMF insights.
  */
 "use client";
 
@@ -10,7 +10,7 @@ import { api } from "@/lib/apiClient";
 import { t } from "@/lib/i18n";
 import { useUIStore } from "@/lib/store";
 import { Idea, SimulationResult } from "@/lib/types";
-import { formatPercentRange } from "@/lib/utils";
+import { formatPercent } from "@/lib/utils";
 import { SimulationForm } from "@/components/forms/SimulationForm";
 import {
   Card,
@@ -32,44 +32,72 @@ const ResultCard = ({
   <Card>
     <CardHeader>
       <CardTitle className="text-xl">
-        {idea?.title ?? t("simulate.result.unknown", "未定義の案")}
+        {result.ideaTitle ?? idea?.title ?? t("simulate.result.unknown", "未定義の案")}
       </CardTitle>
       <CardDescription>
         {t("simulate.result.segment", "想定セグメント")}: {idea?.target ?? "—"}
       </CardDescription>
     </CardHeader>
-    <CardContent className="grid gap-3">
-      <div className="flex items-center justify-between rounded-2xl bg-primary/10 px-4 py-3">
-        <span className="text-sm text-muted-foreground">
-          {t("simulate.result.winProb", "勝率")}
-        </span>
-        <span className="text-2xl font-semibold">
-          {Math.round((result.winProb ?? 0) * 100)}%
-        </span>
-      </div>
-      <div className="grid gap-2 text-sm">
-        <div className="rounded-2xl border border-border p-3">
-          <p className="text-xs text-muted-foreground">
-            {t("simulate.result.apply", "P(申込)")}
-          </p>
-          <p className="font-medium">{formatPercentRange(result.ranges.p_apply)}</p>
+    <CardContent className="grid gap-4">
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="rounded-2xl bg-primary/10 px-4 py-3">
+          <p className="text-xs text-muted-foreground">PSF</p>
+          <p className="text-2xl font-semibold">{result.psf.toFixed(1)}</p>
         </div>
-        <div className="rounded-2xl border border-border p-3">
-          <p className="text-xs text-muted-foreground">
-            {t("simulate.result.purchase", "P(購入)")}
-          </p>
-          <p className="font-medium">{formatPercentRange(result.ranges.p_purchase)}</p>
+        <div className="rounded-2xl bg-secondary/20 px-4 py-3">
+          <p className="text-xs text-muted-foreground">PMF</p>
+          <p className="text-2xl font-semibold">{result.pmf.toFixed(1)}</p>
         </div>
-        <div className="rounded-2xl border border-border p-3">
-          <p className="text-xs text-muted-foreground">
-            {t("simulate.result.d7", "P(D7)")}
-          </p>
-          <p className="font-medium">{formatPercentRange(result.ranges.p_d7)}</p>
-        </div>
+        {result.ci95 ? (
+          <div className="sm:col-span-2 rounded-2xl border border-border px-4 py-3 text-sm">
+            <p className="text-xs text-muted-foreground">95% CI (PMF)</p>
+            <p className="font-medium">
+              {result.ci95.low}% — {result.ci95.high}%
+            </p>
+          </div>
+        ) : null}
       </div>
       <p className="rounded-2xl border border-border p-3 text-sm text-muted-foreground">
-        {result.summary}
+        {result.summaryComment}
       </p>
+      <div className="space-y-2">
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          {t("simulate.result.personaHeading", "ペルソナ反応")}
+        </p>
+        {result.personaReactions.length === 0 ? (
+          <p className="rounded-2xl border border-dashed border-border p-3 text-xs text-muted-foreground">
+            {t("simulate.result.personaEmpty", "登録済みペルソナがありません。/personas から追加してください。")}
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {result.personaReactions.map((reaction) => (
+              <div
+                key={reaction.personaId}
+                className="rounded-2xl border border-border/70 bg-card/60 p-3 shadow-sm"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold">{reaction.personaName}</p>
+                    <p className="text-xs text-muted-foreground">{reaction.category}</p>
+                  </div>
+                  <div className="text-right text-xs text-muted-foreground">
+                    <p>
+                      意欲: <span className="font-medium">{formatPercent(reaction.intent_to_try)}</span>
+                    </p>
+                    <p>
+                      価格許容:{" "}
+                      <span className="font-medium">{formatPercent(reaction.price_acceptance)}</span>
+                    </p>
+                  </div>
+                </div>
+                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                  {reaction.comment}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </CardContent>
   </Card>
 );
@@ -124,19 +152,23 @@ export default function SimulatePage() {
             <CardDescription>
               {t(
                 "simulate.resultSubtitle",
-                "仮想セグメントでの勝率とKPIレンジをダミー演算で提示します。"
+                "登録ペルソナの視点からPSF/PMFを再計算し、コメントを集約します。"
               )}
             </CardDescription>
           </CardHeader>
           <CardContent className="text-sm text-muted-foreground">
             {results.length === 0
               ? t("simulate.resultEmpty", "フォームから案を選択してシミュレーションを実行してください。")
-              : t("simulate.resultHint", "カードを並べてA/B/Cの勝率差を比較できます。")}
+              : t("simulate.resultHint", "PSF / PMF とコメントを比較し、注力すべき打ち手を検討しましょう。")}
           </CardContent>
         </Card>
         <div className="grid gap-4">
-          {results.map((result) => (
-            <ResultCard key={result.ideaId} result={result} idea={ideaMap.get(result.ideaId)} />
+          {results.map((result, index) => (
+            <ResultCard
+              key={result.ideaId ?? result.ideaTitle ?? `simulation-${index}`}
+              result={result}
+              idea={result.ideaId ? ideaMap.get(result.ideaId) : undefined}
+            />
           ))}
         </div>
       </aside>

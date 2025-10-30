@@ -44,6 +44,27 @@ export type Contribution = {
   factors: { name: string; value: number }[];
 };
 
+export type PersonaCategory =
+  | "大企業決裁者"
+  | "VC"
+  | "スタートアップ決裁者"
+  | "デザイナー"
+  | "学生"
+  | "主婦";
+
+export type PersonaProfile = {
+  id: string;
+  name: string;
+  category: PersonaCategory;
+  age?: number;
+  gender?: string;
+  background?: string;
+  traits?: Record<string, number>;
+  comment_style?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 export type Persona = {
   agent_id: string;
   segment: string;
@@ -84,16 +105,23 @@ export type SimulationRequest = {
   filters?: { segment?: string; traits?: Partial<Persona["traits"]> };
 };
 
+export type SimulationPersonaReaction = {
+  personaId: string;
+  personaName: string;
+  category: string;
+  comment: string;
+  intent_to_try: number;
+  price_acceptance: number;
+};
+
 export type SimulationResult = {
-  ideaId: string;
+  ideaId?: string;
+  ideaTitle?: string;
   projectId?: string;
   version?: string;
-  winProb?: number;
-  ranges: {
-    p_apply: [number, number];
-    p_purchase: [number, number];
-    p_d7: [number, number];
-  };
-  ci95: { low: number; high: number };
-  summary: string;
+  psf: number;
+  pmf: number;
+  ci95?: { low: number; high: number };
+  personaReactions: SimulationPersonaReaction[];
+  summaryComment: string;
 };

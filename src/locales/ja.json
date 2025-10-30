@@ -280,16 +280,14 @@
       "submit": "シミュレーション実行"
     },
     "resultTitle": "結果サマリ",
-    "resultSubtitle": "仮想セグメントでの勝率とKPIレンジをダミー演算で提示します。",
+    "resultSubtitle": "登録ペルソナの視点からPSF/PMFを再計算し、コメントを集約します。",
     "resultEmpty": "フォームから案を選択してシミュレーションを実行してください。",
-    "resultHint": "カードを並べてA/B/Cの勝率差を比較できます。",
+    "resultHint": "PSF / PMF とコメントを比較し、注力すべき打ち手を検討しましょう。",
     "result": {
       "unknown": "未定義の案",
       "segment": "想定セグメント",
-      "winProb": "勝率",
-      "apply": "P(申込)",
-      "purchase": "P(購入)",
-      "d7": "P(D7)"
+      "personaHeading": "ペルソナ反応",
+      "personaEmpty": "登録済みペルソナがありません。/personas から追加してください。"
     }
   },
   "reports": {

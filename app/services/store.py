@@ -13,6 +13,7 @@ from typing import Any, Dict, Iterable, List, Optional
 import re
 
 from app.schemas.idea import Idea, IdeaCreate, Reaction
+from app.schemas.persona import Persona, PersonaCreate
 from app.schemas.project import Project
 
 log = logging.getLogger(__name__)
@@ -23,9 +24,11 @@ REACTION_PREFIX = "reaction"
 _projects: Dict[str, Project] = {}
 _ideas: Dict[str, Idea] = {}
 _reactions: Dict[str, List[Reaction]] = {}
+_personas: Dict[str, Persona] = {}
 _idea_counter = itertools.count(1000)
 _reaction_counter = itertools.count(1000)
 _project_counter = itertools.count(1000)
+_persona_counter = itertools.count(1)
 
 
 def _now_iso() -> str:
@@ -37,6 +40,7 @@ def reset_store() -> None:
     _projects.clear()
     _ideas.clear()
     _reactions.clear()
+    _personas.clear()
 
 
 def upsert_ideas(seed: Iterable[Idea]) -> None:
@@ -48,6 +52,11 @@ def upsert_ideas(seed: Iterable[Idea]) -> None:
 def upsert_projects(seed: Iterable[Project]) -> None:
     for project in seed:
         _projects[project.id] = project
+
+
+def upsert_personas(seed: Iterable[Persona]) -> None:
+    for persona in seed:
+        _personas[persona.id] = persona
 
 
 def list_projects() -> List[Project]:
@@ -82,6 +91,10 @@ def get_idea(idea_id: str) -> Optional[Idea]:
 
 def list_reactions(idea_id: str, limit: int = 20) -> List[Reaction]:
     return list(_reactions.get(idea_id, []))[:limit]
+
+
+def list_personas() -> List[Persona]:
+    return sorted(_personas.values(), key=lambda item: item.updatedAt, reverse=True)
 
 
 def create_idea(payload: IdeaCreate) -> Idea:
@@ -126,3 +139,16 @@ def ensure_project_exists(project_id: str, fallback_name: Optional[str] = None) 
 def _slugify(value: str) -> str:
     base = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
     return base or f"project-{next(_project_counter)}"
+
+
+def create_persona(payload: PersonaCreate) -> Persona:
+    ident = f"persona-{next(_persona_counter)}"
+    now = _now_iso()
+    persona = Persona(
+        id=ident,
+        createdAt=now,
+        updatedAt=now,
+        **payload.model_dump(),
+    )
+    _personas[ident] = persona
+    return persona

@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 from typing import List
 
 from app.schemas.idea import Idea, Reaction
+from app.schemas.persona import Persona
 from app.schemas.project import Project
 from app.services import store
 
@@ -79,13 +80,52 @@ def seed() -> None:
 
     store.upsert_ideas(ideas)
 
+    personas: List[Persona] = [
+        Persona(
+            id="persona-startup-lead-01",
+            name="坂本 海斗",
+            category="スタートアップ決裁者",
+            age=32,
+            gender="男性",
+            background="SaaSスタートアップ COO。営業とカスタマーサクセスを統括し、ROIと実装コストのバランスに敏感。",
+            traits={
+                "novelty": 0.7,
+                "price_sensitivity": 0.4,
+                "social_dependence": 0.5,
+                "brand_loyalty": 0.3,
+            },
+            comment_style="冷静分析型",
+            createdAt=_ts(),
+            updatedAt=_ts(),
+        ),
+        Persona(
+            id="persona-student-01",
+            name="村上 彩音",
+            category="学生",
+            age=21,
+            gender="女性",
+            background="映像専門学校3年。卒業制作でSNS向け短尺動画を制作している。",
+            traits={
+                "novelty": 0.82,
+                "price_sensitivity": 0.68,
+                "social_dependence": 0.76,
+                "brand_loyalty": 0.42,
+            },
+            comment_style="フレンドリー",
+            createdAt=_ts(),
+            updatedAt=_ts(),
+        ),
+    ]
+
+    store.upsert_personas(personas)
+
     base_reactions = [
         Reaction(
             id="reaction-001",
             ideaId="idea-video-concierge",
             projectId="projectA",
             version="A",
-            personaId="agent-001",
+            personaId="persona-student-01",
             text="卒業制作が迫っているのでAIが粗編集してくれるのは助かる。",
             likelihood=0.62,
             intent_to_try=0.58,
@@ -97,7 +137,7 @@ def seed() -> None:
             ideaId="idea-ai-reception",
             projectId="projectB",
             version="A",
-            personaId="agent-210",
+            personaId="persona-startup-lead-01",
             text="新人研修の時間が半分になりそう。料金は許容できる。",
             likelihood=0.7,
             intent_to_try=0.68,
@@ -109,7 +149,7 @@ def seed() -> None:
             ideaId="idea-english-routine",
             projectId="projectC",
             version="A",
-            personaId="agent-309",
+            personaId="persona-startup-lead-01",
             text="移動中に学べるのは助かるが、成果の可視化がどれほどか気になる。",
             likelihood=0.55,
             intent_to_try=0.5,

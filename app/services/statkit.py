@@ -13,7 +13,6 @@ from typing import Dict, Iterable, List, Sequence, Tuple
 import numpy as np
 
 from app.schemas.common import Contribution, ContributionFactor, Score
-from app.schemas.idea import SimulationResult, SimulationRanges
 
 RANGE_DECIMALS = 2
 FACTOR_LABELS = ["Pain適合", "TTFV", "価格", "摩擦", "信頼"]
@@ -133,19 +132,3 @@ def simulate_win_probs(idea_ids: Sequence[str]) -> Dict[str, float]:
     total = float(np.sum(samples)) or 1.0
     return {idea_id: float(round(val / total, 3)) for idea_id, val in zip(idea_ids, samples, strict=False)}
 
-
-def build_simulation_result(idea_id: str, momentum: Dict[str, float]) -> SimulationResult:
-    intent = bounded(momentum.get("intent_to_try", 0.5), 0.0, 1.0)
-    score, _ = compute_score(idea_id, momentum)
-    ranges = SimulationRanges(
-        p_apply=score.p_apply,
-        p_purchase=score.p_purchase,
-        p_d7=score.p_d7,
-    )
-    return SimulationResult(
-        ideaId=idea_id,
-        winProb=bounded(momentum.get("win_prob", 0.33), 0.0, 1.0),
-        ranges=ranges,
-        ci95=score.ci95,
-        summary="想定セグメントでの勝率推定です。補助施策で体験導線を強化してください。",
-    )

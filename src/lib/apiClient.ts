@@ -6,6 +6,7 @@ import {
   contributions as seededContributions,
   ideas as seededIdeas,
   personas as seededPersonas,
+  personaProfiles as seededPersonaProfiles,
   projects as seededProjects,
   ragDocs as seededRagDocs,
   reactions as seededReactions,
@@ -15,11 +16,13 @@ import {
   Contribution,
   Idea,
   Persona,
+  PersonaProfile,
   Project,
   RagDoc,
   Reaction,
   Score,
   SimulationRequest,
+  SimulationPersonaReaction,
   SimulationResult
 } from "./types";
 
@@ -33,6 +36,7 @@ const contributionStore: Contribution[] = [...seededContributions];
 const reactionStore: Reaction[] = [...seededReactions];
 const ragStore: RagDoc[] = [...seededRagDocs];
 const personaStore: Persona[] = [...seededPersonas];
+const personaRegistryStore: PersonaProfile[] = [...seededPersonaProfiles];
 
 const simulateNetwork = <T>(data: T, signal?: AbortSignal) =>
   new Promise<T>((resolve, reject) => {
@@ -69,6 +73,23 @@ const slugify = (input: string) => {
     .replace(/^-+|-+$/g, "")
     .slice(0, 48);
   return base || `project-${Math.random().toString(36).slice(2, 8)}`;
+};
+
+const getApiBaseUrl = () => {
+  const base =
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    process.env.NEXT_PUBLIC_BACKEND_URL ||
+    process.env.BACKEND_URL;
+  if (!base) return undefined;
+  return base.endsWith("/") ? base.slice(0, -1) : base;
+};
+
+const parsePersonaResponse = async (response: Response) => {
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data?.detail ?? "Failed to fetch personas");
+  }
+  return data;
 };
 
 const findScore = (ideaId: string): Score => {
@@ -254,6 +275,46 @@ export const api = {
     });
     return simulateNetwork(filtered, signal);
   },
+  async listPersonaProfiles(signal?: AbortSignal): Promise<PersonaProfile[]> {
+    const baseUrl = getApiBaseUrl();
+    if (baseUrl) {
+      const response = await fetch(`${baseUrl}/personas`, {
+        signal
+      });
+      const payload = await parsePersonaResponse(response);
+      return payload as PersonaProfile[];
+    }
+
+    return simulateNetwork([...personaRegistryStore], signal);
+  },
+  async createPersonaProfile(
+    input: Omit<PersonaProfile, "id" | "createdAt" | "updatedAt">,
+    signal?: AbortSignal
+  ): Promise<PersonaProfile> {
+    const baseUrl = getApiBaseUrl();
+    if (baseUrl) {
+      const response = await fetch(`${baseUrl}/personas`, {
+        method: "POST",
+        signal,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(input)
+      });
+      const payload = await parsePersonaResponse(response);
+      return payload as PersonaProfile;
+    }
+
+    const now = new Date().toISOString();
+    const persona: PersonaProfile = {
+      id: generateId("persona"),
+      createdAt: now,
+      updatedAt: now,
+      ...input
+    };
+    personaRegistryStore.push(persona);
+    return simulateNetwork(persona, signal);
+  },
   async getRagDocs(
     params?: { kind?: RagDoc["kind"]; q?: string; projectId?: string },
     signal?: AbortSignal
@@ -277,37 +338,87 @@ export const api = {
     req: SimulationRequest,
     signal?: AbortSignal
   ): Promise<SimulationResult[]> {
-    // TODO(api): 実サーバ接続時にfetchへ置換
+    const baseUrl = getApiBaseUrl();
+    if (baseUrl) {
+      const response = await fetch(`${baseUrl}/simulate`, {
+        method: "POST",
+        signal,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(req)
+      });
+      const payload = await response.json();
+      if (!response.ok) {
+        throw new Error(payload?.detail ?? "シミュレーションの取得に失敗しました");
+      }
+      return payload as SimulationResult[];
+    }
+
+    const clamp = (value: number) => Math.min(1, Math.max(0, value));
+    const fallbackPersonas =
+      personaRegistryStore.length > 0
+        ? personaRegistryStore
+        : [
+            {
+              id: "persona-demo-a",
+              name: "モック学生A",
+              category: "学生",
+              comment_style: "フレンドリー"
+            },
+            {
+              id: "persona-demo-b",
+              name: "モック決裁者B",
+              category: "スタートアップ決裁者",
+              comment_style: "冷静分析型"
+            }
+          ];
+
     const baseResults = req.ideaIds.map((id, index) => {
       const baseScore = findScore(id);
       const idea = ideaStore.find((entry) => entry.id === id);
-      const spread = 0.05 + index * 0.03;
+      const personas = fallbackPersonas.slice(0, Math.min(3, fallbackPersonas.length));
+      const personaReactions: SimulationPersonaReaction[] = personas.map((persona, personaIndex) => {
+        const intentBase = clamp(baseScore.p_apply[1] - 0.06 + personaIndex * 0.05);
+        const priceBase = clamp(baseScore.p_purchase[1] - 0.04 + personaIndex * 0.04);
+        const tone = persona.comment_style ?? "中立";
+        const subject = idea?.title ?? "この案";
+        const comment =
+          tone === "冷静分析型"
+            ? `${persona.name}は ${subject} をROI視点で慎重に評価しています。導入負荷を明確にできれば検討余地があります。`
+            : `${persona.name}は ${subject} に好感を持っていますが、価格感度にも配慮したいと考えています。`;
+        return {
+          personaId: persona.id,
+          personaName: persona.name,
+          category: persona.category,
+          comment,
+          intent_to_try: Number(intentBase.toFixed(3)),
+          price_acceptance: Number(priceBase.toFixed(3))
+        };
+      });
+
+      const mean = (values: number[]) =>
+        values.length ? values.reduce((total, value) => total + value, 0) / values.length : 0;
+      const intents = personaReactions.map((reaction) => reaction.intent_to_try);
+      const prices = personaReactions.map((reaction) => reaction.price_acceptance);
+      const psf = Number((mean(intents) * 100).toFixed(1));
+      const pmf = Number((mean(prices) * 100).toFixed(1));
+
+      const summaryComment =
+        personaReactions.length === 0
+          ? "ペルソナが未登録のためダミー結果を表示しています。"
+          : `${personaReactions.length}名の仮想ペルソナから平均PSF ${psf} / PMF ${pmf} の評価でした。${req.filters?.segment ?? "主要セグメント"}向けに施策を検討しましょう。`;
+
       return {
         ideaId: id,
+        ideaTitle: idea?.title,
         projectId: idea?.projectId,
         version: idea?.version,
-        winProb: Math.round((0.45 + index * 0.12) * 100) / 100,
-        ranges: {
-          p_apply: [
-            Math.max(baseScore.p_apply[0] - spread, 0),
-            Math.min(baseScore.p_apply[1] + spread, 1)
-          ] as [number, number],
-          p_purchase: [
-            Math.max(baseScore.p_purchase[0] - spread, 0),
-            Math.min(baseScore.p_purchase[1] + spread, 1)
-          ] as [number, number],
-          p_d7: [
-            Math.max(baseScore.p_d7[0] - spread, 0),
-            Math.min(baseScore.p_d7[1] + spread, 1)
-          ] as [number, number]
-        },
-        ci95: {
-          low: baseScore.ci95.low,
-          high: baseScore.ci95.high
-        },
-        summary: `${req.filters?.segment ?? "主要セグメント"}での想定反応は${
-          baseScore.verdict === "Go" ? "好調" : "検証継続"
-        }。補助施策で体験導線を強化してください。`
+        psf,
+        pmf,
+        ci95: baseScore.ci95,
+        personaReactions,
+        summaryComment
       };
     });
     return simulateNetwork(baseResults, signal);

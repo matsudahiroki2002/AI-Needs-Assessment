@@ -34,7 +34,8 @@ MODEL_CHAT=gpt-4o-mini  # 省略時は gpt-4o-mini
 app/
   main.py                # FastAPI エントリーポイント
   core/config.py         # 設定管理
-  api/routes.py          # REST ルータ
+  api/routes.py          # REST ルータ（アイデア / プロジェクト）
+  api/routes_persona.py  # ペルソナ登録用ルータ
   schemas/               # Pydantic スキーマ
   services/              # GPTアダプタ、statkit、シミュレーション等
   data/seed.py           # 開発用シードデータ
@@ -47,9 +48,10 @@ tests/
 
 - `GET /health` : ヘルスチェック
 - `GET /ideas` / `POST /ideas` : 案の取得・作成
+- `GET /personas` / `POST /personas` : デジタルツイン型ペルソナの取得・登録
 - `POST /ideas/score` : GPT で反応を推定 → psf/pmf, CI, 寄与分解を返却
 - `GET /ideas/{id}/reactions` : 擬似反応の取得
-- `POST /simulate` : A/B/C 勝率・レンジ算出
+- `POST /simulate` : 登録ペルソナごとのGPT反応を集約し、PSF / PMF とコメントサマリを返却
 
 レスポンス構造はフロントの `lib/apiClient.ts` が想定する型と互換です。
 
@@ -82,6 +84,7 @@ pytest
 - `gpt_adapter.py` を差し替えるだけで別ベンダー接続が可能。
 - `store.py` をデータベース実装に置き換える際も API シグネチャは維持。
 - `statkit.py` のヒューリスティックを実測値計算へ置換。
+- ペルソナ登録用アンケートテンプレート（`docs/persona-survey-template.md`）をベースに UI/モバイルでの登録フローを整備予定。
 
 ---
 

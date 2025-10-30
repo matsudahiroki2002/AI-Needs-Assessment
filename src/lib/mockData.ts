@@ -2,7 +2,16 @@
  * @file Mock dataset powering the UI-only MVP for the Needs Research App.
  * @remarks Dataset supports multiple projects and idea versions so the UI can toggle contexts.
  */
-import { Contribution, Idea, Persona, Project, RagDoc, Reaction, Score } from "./types";
+import {
+  Contribution,
+  Idea,
+  Persona,
+  PersonaProfile,
+  Project,
+  RagDoc,
+  Reaction,
+  Score
+} from "./types";
 
 export const projects: Project[] = [
   {
@@ -186,6 +195,43 @@ export const scores: Score[] = [
     p_purchase: [0.2, 0.33],
     p_d7: [0.37, 0.5],
     verdict: "Improve"
+  }
+];
+
+export const personaProfiles: PersonaProfile[] = [
+  {
+    id: "persona-startup-lead-01",
+    name: "坂本 海斗",
+    category: "スタートアップ決裁者",
+    age: 32,
+    gender: "男性",
+    background: "SaaSスタートアップ COO。営業とカスタマーサクセス部門を統括。",
+    traits: {
+      novelty: 0.7,
+      price_sensitivity: 0.4,
+      social_dependence: 0.5,
+      brand_loyalty: 0.3
+    },
+    comment_style: "冷静分析型",
+    createdAt: ts(5, 12),
+    updatedAt: ts(5, 24)
+  },
+  {
+    id: "persona-student-01",
+    name: "村上 彩音",
+    category: "学生",
+    age: 21,
+    gender: "女性",
+    background: "映像専門学校3年。卒業制作でSNS向け短尺動画を制作中。",
+    traits: {
+      novelty: 0.82,
+      price_sensitivity: 0.68,
+      social_dependence: 0.76,
+      brand_loyalty: 0.42
+    },
+    comment_style: "フレンドリー",
+    createdAt: ts(5, 5),
+    updatedAt: ts(5, 26)
   }
 ];
 

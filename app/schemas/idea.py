@@ -46,22 +46,27 @@ class Reaction(BaseModel):
     segment: Optional[str] = None
 
 
-class SimulationRanges(BaseModel):
-    p_apply: tuple[confloat(ge=0, le=1), confloat(ge=0, le=1)]
-    p_purchase: tuple[confloat(ge=0, le=1), confloat(ge=0, le=1)]
-    p_d7: tuple[confloat(ge=0, le=1), confloat(ge=0, le=1)]
-
-
 class SimulationRequest(BaseModel):
     ideaIds: conlist(str, min_length=1, max_length=3)
     filters: Optional[Dict[str, str | float]] = None
 
 
+class SimulationPersonaReaction(BaseModel):
+    personaId: str
+    personaName: str
+    category: str
+    comment: str
+    intent_to_try: confloat(ge=0, le=1)
+    price_acceptance: confloat(ge=0, le=1)
+
+
 class SimulationResult(BaseModel):
-    ideaId: str
+    ideaId: Optional[str] = None
+    ideaTitle: Optional[str] = None
     projectId: Optional[str] = None
     version: Optional[str] = None
-    winProb: confloat(ge=0, le=1)
-    ranges: SimulationRanges
-    ci95: CI
-    summary: str
+    psf: confloat(ge=0, le=100)
+    pmf: confloat(ge=0, le=100)
+    ci95: Optional[CI] = None
+    personaReactions: List[SimulationPersonaReaction]
+    summaryComment: str

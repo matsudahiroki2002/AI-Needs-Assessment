@@ -4,3 +4,5 @@ node_modules/
 playwright-report/
 coverage/
 .env
+__pycache__/
+*.egg-info/

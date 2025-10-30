@@ -9,6 +9,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import router
+from app.api.routes_persona import router as persona_router
 from app.core.config import get_settings
 from app.data.seed import seed
 from app.services import store
@@ -35,6 +36,7 @@ def create_app() -> FastAPI:
         log.info("Application started with %d seeded ideas", len(store.list_ideas()))
 
     app.include_router(router)
+    app.include_router(persona_router)
     return app
 
 

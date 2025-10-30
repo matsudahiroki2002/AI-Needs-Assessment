@@ -10,10 +10,13 @@ import { api } from "@/lib/apiClient";
 import { t } from "@/lib/i18n";
 import { useUIStore } from "@/lib/store";
 import { Persona } from "@/lib/types";
-import { PersonasTable } from "@/components/tables/PersonasTable";
 import { FiltersBar } from "@/components/forms/FiltersBar";
+import { PersonaForm } from "@/components/forms/PersonaForm";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PersonasTable } from "@/components/tables/PersonasTable";
+import { PersonaRegistryList } from "@/components/tables/PersonaRegistryList";
 import { useProjectStore } from "@/store/projectStore";
+import { usePersonaStore } from "@/store/personaStore";
 
 type TraitFilters = {
   novelty: number;
@@ -28,12 +31,18 @@ const initialTraits: TraitFilters = {
 };
 
 export default function PersonasPage() {
+  const setToast = useUIStore((state) => state.setToast);
   const filters = useUIStore((state) => state.filters);
   const [rawPersonas, setRawPersonas] = useState<Persona[]>([]);
   const [loading, setLoading] = useState(true);
   const [traitFilters, setTraitFilters] = useState<TraitFilters>(initialTraits);
   const { currentProject, projectLabel } = useProjectStore();
   const currentProjectLabel = projectLabel(currentProject);
+  const fetchPersonas = usePersonaStore((state) => state.fetchPersonas);
+  const registered = usePersonaStore((state) => state.personas);
+  const registeredLoading = usePersonaStore((state) => state.loading);
+  const personaError = usePersonaStore((state) => state.error);
+  const resetPersonaError = usePersonaStore((state) => state.resetError);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -54,6 +63,20 @@ export default function PersonasPage() {
     load();
     return () => controller.abort();
   }, [currentProject, filters.segment]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchPersonas(controller.signal).catch((error) => {
+      console.error(error);
+    });
+    return () => controller.abort();
+  }, [fetchPersonas]);
+
+  useEffect(() => {
+    if (!personaError) return;
+    setToast({ tone: "error", message: personaError });
+    resetPersonaError();
+  }, [personaError, resetPersonaError, setToast]);
 
   const filtered = useMemo(() => {
     return rawPersonas.filter((persona) => {
@@ -88,6 +111,33 @@ export default function PersonasPage() {
             "セグメントや特性を軸に仮想ユーザーの洞察を横断的に確認できます。"
           )}
         </p>
+      </section>
+
+      <section className="grid gap-6 rounded-2xl border border-border bg-card/40 p-6 shadow-lg lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
+        <div className="space-y-4">
+          <div>
+            <h2 className="text-xl font-semibold">デジタルツインを登録</h2>
+            <p className="text-sm text-muted-foreground">
+              実在の友人や顧客をモデルにしたペルソナを登録し、反応生成に活用します。
+            </p>
+          </div>
+          <PersonaForm />
+        </div>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">登録済みペルソナ</h2>
+            <p className="text-xs text-muted-foreground">
+              現在 {registered.length} 名（カテゴリ：
+              {Array.from(new Set(registered.map((item) => item.category))).join(" / ") || "未登録"}）
+            </p>
+          </div>
+          <PersonaRegistryList personas={registered} loading={registeredLoading} />
+          {registered.length === 0 && (
+            <div className="rounded-2xl bg-primary/5 p-4 text-xs text-primary">
+              推奨カテゴリは「スタートアップ決裁者」「学生」です。必要に応じて他カテゴリも追加できます。
+            </div>
+          )}
+        </div>
       </section>
 
       <FiltersBar

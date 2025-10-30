@@ -77,7 +77,7 @@ def score_ideas(request: ScoreRequest) -> List[Dict[str, object]]:
             {
                 "projectId": idea.projectId,
                 "version": idea.version,
-                "personaId": "agent-gpt",
+                "personaId": "persona-gpt",
                 "text": insight.get("reaction", ""),
                 "likelihood": score.p_apply[1],
                 "intent_to_try": insight.get("intent_to_try", 0.5),
