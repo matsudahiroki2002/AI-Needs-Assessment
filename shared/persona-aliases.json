@@ -1,0 +1,50 @@
+[
+  {
+    "personaId": "persona-student-01",
+    "legacyAgentId": "agent-001",
+    "slug": "student-creative-a",
+    "displayName": "村上 彩音",
+    "category": "学生",
+    "segment": "学生 / クリエイター志望"
+  },
+  {
+    "personaId": "persona-student-creative-b",
+    "legacyAgentId": "agent-304",
+    "slug": "student-creative-b",
+    "displayName": "佐伯 光",
+    "category": "学生",
+    "segment": "学生 / クリエイター志望"
+  },
+  {
+    "personaId": "persona-startup-lead-01",
+    "legacyAgentId": "agent-102",
+    "slug": "startup-lead-a",
+    "displayName": "坂本 海斗",
+    "category": "スタートアップ決裁者",
+    "segment": "小売 / 接客リーダー"
+  },
+  {
+    "personaId": "persona-startup-lead-b",
+    "legacyAgentId": "agent-407",
+    "slug": "startup-lead-b",
+    "displayName": "吉村 亮",
+    "category": "スタートアップ決裁者",
+    "segment": "店舗マネージャー"
+  },
+  {
+    "personaId": "persona-english-routine-a",
+    "legacyAgentId": "agent-203",
+    "slug": "english-routine-a",
+    "displayName": "相澤 透",
+    "category": "学生",
+    "segment": "社会人 / 海外営業"
+  },
+  {
+    "personaId": "persona-english-routine-b",
+    "legacyAgentId": "agent-509",
+    "slug": "english-routine-b",
+    "displayName": "秋山 美咲",
+    "category": "学生",
+    "segment": "営業トレーナー"
+  }
+]

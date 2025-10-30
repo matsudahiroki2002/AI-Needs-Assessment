@@ -12,6 +12,8 @@ import { t } from "@/lib/i18n";
 import { useUIStore } from "@/lib/store";
 import { Contribution, Idea, Reaction, Score } from "@/lib/types";
 import { formatPercentRange } from "@/lib/utils";
+import { resolvePersonaRef } from "@/lib/personaRegistry";
+import { isPersonaEverywhereEnabled } from "@/lib/featureFlags";
 import { useProjectStore } from "@/store/projectStore";
 import FactorContributionCard from "@/components/cards/FactorContributionCard";
 import { PsfPmfCard } from "@/components/cards/PsfPmfCard";
@@ -50,13 +52,16 @@ const MetricCard = ({ label, value, sublabel, trend }: MetricCardProps) => (
   </Card>
 );
 
-const ReactionsPanel = ({ reactions }: { reactions: Reaction[] }) => (
-  <Card>
-    <CardHeader className="flex flex-row items-center justify-between">
-      <div>
-        <CardTitle className="text-xl">
-          {t("dashboard.reactionsTitle", "擬似反応サマリ")}
-        </CardTitle>
+const ReactionsPanel = ({ reactions }: { reactions: Reaction[] }) => {
+  const personaEverywhere = isPersonaEverywhereEnabled();
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle className="text-xl">
+            {t("dashboard.reactionsTitle", "擬似反応サマリ")}
+          </CardTitle>
         <CardDescription>
           {t(
             "dashboard.reactionsSubtitle",
@@ -67,24 +72,50 @@ const ReactionsPanel = ({ reactions }: { reactions: Reaction[] }) => (
       <Badge variant="outline">
         {t("dashboard.reactionsCount", "{{count}}件", { count: reactions.length })}
       </Badge>
-    </CardHeader>
-    <CardContent className="grid gap-4">
-      {reactions.map((reaction) => (
-        <div key={reaction.id} className="flex flex-col gap-2 rounded-2xl border border-border p-4">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Badge variant="soft">{reaction.segment ?? t("reactions.unknown", "不明")}</Badge>
-            <span>{reaction.personaId}</span>
+      </CardHeader>
+      <CardContent className="grid gap-4">
+        {reactions.map((reaction) => (
+          <div key={reaction.id} className="flex flex-col gap-2 rounded-2xl border border-border p-4">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              <Badge variant="soft">{reaction.segment ?? t("reactions.unknown", "不明")}</Badge>
+              {(() => {
+                if (!personaEverywhere) {
+                  return <span>{reaction.personaId}</span>;
+                }
+                const legacyAgentId = reaction.personaId?.startsWith("agent-") ? reaction.personaId : undefined;
+                const personaRef = resolvePersonaRef({
+                  personaId: reaction.personaId,
+                  legacyAgentId,
+                  fallbackDisplayName: reaction.segment
+                });
+                const unresolved =
+                  personaRef?.legacyAgentId &&
+                  personaRef.legacyAgentId === personaRef.personaId &&
+                  !personaRef.slug;
+                const displayName = personaRef?.displayName ??
+                  (unresolved
+                    ? t("personas.unassigned", "未割当のペルソナ")
+                    : reaction.segment ?? reaction.personaId ?? "-");
+                const identifier = personaRef?.slug ?? (unresolved ? undefined : personaRef?.personaId);
+                return (
+                  <span>
+                    {displayName}
+                    {identifier ? <span className="ml-2 text-muted-foreground/70">{identifier}</span> : null}
+                  </span>
+                );
+              })()}
+            </div>
+            <p className="text-sm leading-relaxed text-foreground">{reaction.text}</p>
+            <div className="flex gap-3 text-xs text-muted-foreground">
+              <span>{t("dashboard.likelihood", "受容確率")}: {Math.round(reaction.likelihood * 100)}%</span>
+              <span>{t("dashboard.intent", "意欲")}: {Math.round(reaction.intent_to_try * 100)}%</span>
+            </div>
           </div>
-          <p className="text-sm leading-relaxed text-foreground">{reaction.text}</p>
-          <div className="flex gap-3 text-xs text-muted-foreground">
-            <span>{t("dashboard.likelihood", "受容確率")}: {Math.round(reaction.likelihood * 100)}%</span>
-            <span>{t("dashboard.intent", "意欲")}: {Math.round(reaction.intent_to_try * 100)}%</span>
-          </div>
-        </div>
-      ))}
-    </CardContent>
-  </Card>
-);
+        ))}
+      </CardContent>
+    </Card>
+  );
+};
 
 const MERGED_METRICS = ["p_apply", "p_purchase", "p_d7"] as const;
 

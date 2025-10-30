@@ -65,6 +65,15 @@ export type PersonaProfile = {
   updatedAt?: string;
 };
 
+export type PersonaRef = {
+  personaId: string;
+  slug?: string;
+  displayName: string;
+  legacyAgentId?: string;
+  category?: PersonaCategory | string;
+  segment?: string;
+};
+
 export type Persona = {
   agent_id: string;
   segment: string;

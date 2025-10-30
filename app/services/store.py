@@ -15,6 +15,12 @@ import re
 from app.schemas.idea import Idea, IdeaCreate, Reaction
 from app.schemas.persona import Persona, PersonaCreate
 from app.schemas.project import Project
+from app.services.persona_aliases import (
+    PersonaAlias,
+    PersonaResolution,
+    iter_aliases,
+    resolve_persona_reference,
+)
 
 log = logging.getLogger(__name__)
 
@@ -29,6 +35,8 @@ _idea_counter = itertools.count(1000)
 _reaction_counter = itertools.count(1000)
 _project_counter = itertools.count(1000)
 _persona_counter = itertools.count(1)
+_compat_stats: Dict[str, int] = {"legacy_hits": 0, "legacy_unresolved": 0}
+_persona_alias_index: Dict[str, PersonaAlias] = {}
 
 
 def _now_iso() -> str:
@@ -41,6 +49,8 @@ def reset_store() -> None:
     _ideas.clear()
     _reactions.clear()
     _personas.clear()
+    _compat_stats.update({"legacy_hits": 0, "legacy_unresolved": 0})
+    _persona_alias_index.clear()
 
 
 def upsert_ideas(seed: Iterable[Idea]) -> None:
@@ -57,6 +67,32 @@ def upsert_projects(seed: Iterable[Project]) -> None:
 def upsert_personas(seed: Iterable[Persona]) -> None:
     for persona in seed:
         _personas[persona.id] = persona
+
+
+def _ensure_persona_alias(alias: PersonaAlias) -> None:
+    _persona_alias_index[alias.persona_id] = alias
+    if alias.persona_id in _personas:
+        return
+    now = _now_iso()
+    persona = Persona(
+        id=alias.persona_id,
+        name=alias.display_name or alias.persona_id,
+        category=alias.category or "学生",
+        age=None,
+        gender=None,
+        background=alias.segment,
+        traits=None,
+        comment_style=None,
+        createdAt=now,
+        updatedAt=now,
+    )
+    _personas[alias.persona_id] = persona
+
+
+def register_persona_aliases() -> None:
+    """Ensure placeholder personas exist for legacy agent mappings."""
+    for alias in iter_aliases():
+        _ensure_persona_alias(alias)
 
 
 def list_projects() -> List[Project]:
@@ -114,6 +150,33 @@ def append_reaction(idea_id: str, reaction: Reaction) -> None:
 
 def create_reaction(idea_id: str, payload: Dict[str, Any]) -> Reaction:
     from app.schemas.idea import Reaction as ReactionSchema  # avoid circular
+
+    legacy_agent_id = (
+        payload.pop("agentId", None)
+        or payload.pop("legacyAgentId", None)
+        or payload.pop("legacy_agent_id", None)
+    )
+    resolution: PersonaResolution = resolve_persona_reference(
+        persona_id=payload.get("personaId"), legacy_agent_id=legacy_agent_id
+    )
+
+    if resolution.alias is not None:
+        _compat_stats["legacy_hits"] += int(resolution.used_legacy)
+        _ensure_persona_alias(resolution.alias)
+
+    if resolution.unresolved_legacy is not None:
+        _compat_stats["legacy_unresolved"] += 1
+        log.error(
+            "Legacy agentId '%s' stored without persona mapping; using fallback identifier.",
+            resolution.unresolved_legacy,
+        )
+
+    if resolution.persona_id:
+        payload["personaId"] = resolution.persona_id
+    elif legacy_agent_id:
+        payload["personaId"] = legacy_agent_id
+    else:
+        payload.setdefault("personaId", "persona-unknown")
 
     reaction_id = f"{REACTION_PREFIX}-{next(_reaction_counter)}"
     reaction = ReactionSchema(

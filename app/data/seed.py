@@ -118,6 +118,7 @@ def seed() -> None:
     ]
 
     store.upsert_personas(personas)
+    store.register_persona_aliases()
 
     base_reactions = [
         Reaction(

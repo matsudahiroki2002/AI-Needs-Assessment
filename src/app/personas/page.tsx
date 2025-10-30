@@ -10,6 +10,8 @@ import { api } from "@/lib/apiClient";
 import { t } from "@/lib/i18n";
 import { useUIStore } from "@/lib/store";
 import { Persona } from "@/lib/types";
+import { logLegacyAgentUsage, resolvePersonaRef } from "@/lib/personaRegistry";
+import { isPersonaEverywhereEnabled } from "@/lib/featureFlags";
 import { FiltersBar } from "@/components/forms/FiltersBar";
 import { PersonaForm } from "@/components/forms/PersonaForm";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -31,6 +33,7 @@ const initialTraits: TraitFilters = {
 };
 
 export default function PersonasPage() {
+  const personaEverywhere = isPersonaEverywhereEnabled();
   const setToast = useUIStore((state) => state.setToast);
   const filters = useUIStore((state) => state.filters);
   const [rawPersonas, setRawPersonas] = useState<Persona[]>([]);
@@ -54,6 +57,13 @@ export default function PersonasPage() {
           controller.signal
         );
         setRawPersonas(personas);
+        if (personaEverywhere) {
+          personas.forEach((persona) => {
+            if (persona.agent_id) {
+              logLegacyAgentUsage(persona.agent_id);
+            }
+          });
+        }
       } catch (error) {
         console.error(error);
       } finally {
@@ -62,7 +72,7 @@ export default function PersonasPage() {
     };
     load();
     return () => controller.abort();
-  }, [currentProject, filters.segment]);
+  }, [currentProject, filters.segment, personaEverywhere]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -80,8 +90,22 @@ export default function PersonasPage() {
 
   const filtered = useMemo(() => {
     return rawPersonas.filter((persona) => {
+      const personaRef = personaEverywhere
+        ? resolvePersonaRef({ legacyAgentId: persona.agent_id, fallbackDisplayName: persona.segment })
+        : undefined;
       const searchMatch = filters.search
-        ? [persona.agent_id, persona.segment, persona.social?.community ?? ""]
+        ? (
+            personaEverywhere
+              ? [
+                  personaRef?.displayName,
+                  personaRef?.slug,
+                  personaRef?.personaId,
+                  persona.segment,
+                  persona.social?.community ?? ""
+                ]
+              : [persona.agent_id, persona.segment, persona.social?.community ?? ""]
+          )
+            .filter(Boolean)
             .join(" ")
             .toLowerCase()
             .includes(filters.search.toLowerCase())
@@ -92,7 +116,7 @@ export default function PersonasPage() {
         persona.traits.time_constraint >= traitFilters.time_constraint - 0.2;
       return searchMatch && traitMatch;
     });
-  }, [rawPersonas, filters.search, traitFilters]);
+  }, [rawPersonas, filters.search, traitFilters, personaEverywhere]);
 
   const segments = useMemo(
     () => Array.from(new Set(rawPersonas.map((persona) => persona.segment))),

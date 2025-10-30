@@ -195,6 +195,7 @@
     "subtitle": "セグメントや特性を軸に仮想ユーザーの洞察を横断的に確認できます。",
     "table": {
       "agentId": "エージェントID",
+      "persona": "ペルソナ",
       "segment": "セグメント",
       "traits": "特性スコア",
       "constraints": "制約",
@@ -213,7 +214,9 @@
     "social": {
       "none": "コミュニティ情報なし",
       "degree": "影響度"
-    }
+    },
+    "unassigned": "未割当のペルソナ",
+    "unassignedHint": "旧IDとのマッピングが未設定です。"
   },
   "reactions": {
     "segmentAll": "すべて",
