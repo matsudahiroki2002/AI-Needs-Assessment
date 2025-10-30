@@ -1,0 +1,312 @@
+{
+  "common": {
+    "appName": "ニーズ調査AIダッシュボード",
+    "loading": "読み込み中…",
+    "error": "エラーが発生しました",
+    "retry": "再試行",
+    "create": "作成",
+    "cancel": "キャンセル",
+    "search": "検索",
+    "filters": "フィルター",
+    "segment": "セグメント",
+    "seeAll": "すべて表示",
+    "updatedAt": "更新日時",
+    "createdAt": "作成日時"
+  },
+  "header": {
+    "searchPlaceholder": "AI案・セグメントを検索",
+    "searchLabel": "グローバル検索",
+    "searchAction": "検索",
+    "themeToggle": "ダークテーマ切替",
+    "notifications": "通知",
+    "settings": "設定"
+  },
+  "navigation": {
+    "dashboard": "ダッシュボード",
+    "ideas": "案一覧",
+    "personas": "ペルソナ",
+    "rag": "RAGソース",
+    "simulate": "シミュレーション",
+    "reports": "レポート",
+    "virtualUser": "AI Virtual User",
+    "appTitle": "ニーズ調査AI",
+    "primary": "主要ナビゲーション",
+    "ctaTitle": "実測データとの統合を準備中",
+    "ctaBody": "バックエンド接続後は、このUIから直接シミュレーションとレポート出力が可能になります。"
+  },
+  "verdict": {
+    "Go": "Go",
+    "Improve": "Improve",
+    "Kill": "Kill"
+  },
+  "charts": {
+    "trend": "トレンド",
+    "confidenceInterval": "95%信頼区間",
+    "step": "ステップ",
+    "contributionUnit": "寄与度"
+  },
+  "toast": {
+    "dismiss": "閉じる"
+  },
+  "dashboard": {
+    "title": "ニーズ検証ダッシュボード",
+    "subtitle": "仮想ユーザーの評価と最新の指標を確認し、PSF/PMFの進捗を俯瞰します。",
+    "psfPmfTitle": "PSF / PMF プロファイル",
+    "psfPmfSubtitle": "95%信頼区間での製品適合度。Go/Improve/Killをシグナル表示します。",
+    "psfLabel": "PSF",
+    "pmfLabel": "PMF",
+    "midpoint": "中央値",
+    "ciRange": "信頼区間",
+    "metricApply": "申込率",
+    "metricPurchase": "購入率",
+    "metricDay7": "D7継続",
+    "metricRange": "現状の想定レンジ",
+    "metric": {
+      "p_apply": "申込率 (min-max)",
+      "p_purchase": "購入率 (min-max)",
+      "p_d7": "D7 継続率 (min-max)"
+    },
+    "reactionsTitle": "擬似反応サマリ",
+    "reactionsSubtitle": "最新のフィードバックとセグメントを参照し、次の検証ポイントを検討します。",
+    "reactionsCount": "{{count}}件",
+    "likelihood": "受容確率",
+    "intent": "意欲",
+    "syntheticToggle": "合成データ表示",
+    "syntheticToggleLabel": "合成/実測データの切替",
+    "mode": {
+      "synthetic": "合成のみ",
+      "blend": "合成 + 実測"
+    },
+    "actionTitle": "次アクション候補",
+    "actionSubtitle": "スコア改善に向けた優先アクションを整理します。",
+    "action": {
+      "iterate": "獲得チャネルの細分化",
+      "iterate.body": "価格帯別にクリエイティブをテストし、仮想ユーザーからの反応差分をログに残します。",
+      "timing": "オンボーディング体験短縮",
+      "timing.body": "初回導入の手順を3ステップに再構成し、継続率の変化を追跡します。",
+      "refresh": "提案を更新"
+    }
+  },
+  "ideas": {
+    "title": "案一覧",
+    "subtitle": "仮想ユーザーからの評価データを元に案を整理し、詳細ページで深掘りできます。",
+    "formTitle": "新規案の作成",
+    "formSubtitle": "1ファイルのAPI差し替えでシームレスに本番連携できる構造です。",
+    "segmentSummary": "セグメント構成",
+    "segmentSubtitle": "主要ターゲットの分布を把握します。",
+    "items": "件",
+    "table": {
+      "title": "アイデア名",
+      "target": "ターゲット",
+      "price": "価格",
+      "psf": "PSF",
+      "pmf": "PMF",
+      "updatedAt": "更新日時",
+      "empty": "条件に一致する案が見つかりません。",
+      "clearFilters": "フィルターをリセット"
+    }
+  },
+  "ideaForm": {
+    "validation": {
+      "title": "タイトルは2文字以上で入力してください。",
+      "target": "ターゲットの短い説明を入力してください。",
+      "pain": "課題をもう少し詳細に記入してください。",
+      "solution": "解決アプローチを記入してください。",
+      "price": "価格は0以上で入力してください。",
+      "channel": "想定チャネルを入力してください。",
+      "onboarding": "導入フローの概要を記入してください。"
+    },
+    "toast": {
+      "success": "案を作成しました。",
+      "error": "作成に失敗しました。時間を置いて再試行してください。"
+    },
+    "field": {
+      "title": "案のタイトル",
+      "target": "ターゲット",
+      "pain": "解決したい課題",
+      "solution": "提案する解決策",
+      "price": "想定価格 (JPY)",
+      "channel": "想定チャネル",
+      "onboarding": "導入フロー概要"
+    },
+    "placeholder": {
+      "title": "例: AI動画編集コンシェルジュ",
+      "target": "学生 / クリエイター志望",
+      "channel": "チャネルを選択"
+    },
+    "channel": {
+      "social": "SNS広告",
+      "email": "メール",
+      "webinar": "ウェビナー",
+      "retail": "店舗内告知"
+    },
+    "reset": "リセット",
+    "submitting": "送信中…",
+    "submit": "案を登録"
+  },
+  "ideaDetail": {
+    "invalid": "URLが正しくありません。",
+    "invalidDescription": "一覧ページから再度アクセスしてください。",
+    "notFound": "該当する案が見つかりません。",
+    "notFoundDescription": "案が削除されたかURLが変更された可能性があります。",
+    "ideaId": "Idea ID",
+    "meta": "ターゲット",
+    "channel": "チャネル",
+    "updatedAt": "最終更新日",
+    "scoreTitle": "検証スコア概要",
+    "scoreSubtitle": "PSF/PMFと主要KPIレンジを集約し、意思決定のサマリを提示します。",
+    "psf": "PSF",
+    "pmf": "PMF",
+    "ci": "95%信頼区間",
+    "metricApply": "P(申込)レンジ",
+    "metricPurchase": "P(購入)レンジ",
+    "metricD7": "P(D7)レンジ",
+    "contributionTitle": "寄与分解トップ要因",
+    "contributionSubtitle": "PSF/PMFスコアに影響する要因を寄与度の高い順に表示します。",
+    "problemSolution": "課題 / ソリューション",
+    "pain": "解決したい課題",
+    "solution": "提案する解決策",
+    "onboardingTitle": "導入フロー",
+    "improveTitle": "改善提案",
+    "improveSubtitle": "仮想ユーザーの反応と寄与度から算出した優先施策です。",
+    "suggestionRewrite": "価値訴求の3秒リライト",
+    "suggestionRewriteBody": "動画編集の自動化ではなく成果物のクオリティを冒頭で強調しましょう。",
+    "suggestionPricing": "価格帯の再テスト",
+    "suggestionPricingBody": "4,000円代前半と5,000円代後半で仮想購入率に差があるため、2パターンを検証します。",
+    "suggestionOnboarding": "オンボーディング短縮",
+    "suggestionOnboardingBody": "素材アップロード〜初回フィードバックまでを15分以内に収めるガイドを追加。",
+    "reactionsTitle": "擬似ユーザー反応",
+    "reactionsSubtitle": "セグメントやページを切り替えて詳細コメントを確認できます。"
+  },
+  "filters": {
+    "title": "条件を調整",
+    "subtitle": "セグメント・検索・特性を組み合わせて分析します。",
+    "segment": "セグメント",
+    "allSegments": "すべてのセグメント",
+    "search": "キーワード",
+    "searchPlaceholder": "キーワードを入力",
+    "novelty": "新奇性",
+    "price_sensitivity": "価格感度",
+    "time_constraint": "時間制約",
+    "reset": "条件をリセット"
+  },
+  "personas": {
+    "title": "合成ペルソナ一覧",
+    "subtitle": "セグメントや特性を軸に仮想ユーザーの洞察を横断的に確認できます。",
+    "table": {
+      "agentId": "エージェントID",
+      "segment": "セグメント",
+      "traits": "特性スコア",
+      "constraints": "制約",
+      "social": "ソーシャル指標"
+    },
+    "trait": {
+      "novelty": "新奇性",
+      "priceSensitivity": "価格感度",
+      "timeConstraint": "時間制約"
+    },
+    "constraint": {
+      "budget": "予算",
+      "time": "時間",
+      "none": "特記事項なし"
+    },
+    "social": {
+      "none": "コミュニティ情報なし",
+      "degree": "影響度"
+    }
+  },
+  "reactions": {
+    "segmentAll": "すべて",
+    "filterLabel": "セグメント絞り込み",
+    "table": {
+      "segment": "セグメント",
+      "comment": "コメント",
+      "likelihood": "受容確率",
+      "intent": "意欲",
+      "createdAt": "取得日"
+    },
+    "unknown": "不明",
+    "empty": "この条件では擬似反応が取得できません。",
+    "pagination": "{{page}}/{{total}} ページ",
+    "prev": "前へ",
+    "next": "次へ"
+  },
+  "rag": {
+    "title": "RAGソースブラウズ",
+    "subtitle": "レビューや価格動向などの情報源を一覧し、検証に役立つポイントを抽出します。",
+    "search": {
+      "label": "キーワード",
+      "placeholder": "例: 価格, 継続率",
+      "submit": "検索"
+    },
+    "filter": {
+      "kind": "ドキュメント種別",
+      "all": "すべて"
+    },
+    "kind": {
+      "review": "レビュー",
+      "pricing": "価格情報",
+      "policy": "規約・法令",
+      "trend": "トレンド"
+    },
+    "table": {
+      "kind": "種別",
+      "source": "出典",
+      "excerpt": "抜粋",
+      "updatedAt": "更新日",
+      "empty": "該当するナレッジが見つかりません。条件を調整してください。"
+    }
+  },
+  "simulate": {
+    "title": "シミュレーション",
+    "validation": {
+      "idea": "比較する案を1つ以上選択してください。",
+      "ideaMax": "比較は最大3案までです。"
+    },
+    "toast": {
+      "success": "シミュレーションを更新しました。",
+      "error": "シミュレーションに失敗しました。"
+    },
+    "form": {
+      "title": "ターゲット条件",
+      "subtitle": "セグメントと特性を指定して勝率レンジを推定します。",
+      "segment": "対象セグメント",
+      "segmentAll": "すべて",
+      "novelty": "新奇性",
+      "price_sensitivity": "価格感度",
+      "time_constraint": "時間制約",
+      "ideas": "比較する案 (最大3件)",
+      "running": "計算中…",
+      "submit": "シミュレーション実行"
+    },
+    "resultTitle": "結果サマリ",
+    "resultSubtitle": "仮想セグメントでの勝率とKPIレンジをダミー演算で提示します。",
+    "resultEmpty": "フォームから案を選択してシミュレーションを実行してください。",
+    "resultHint": "カードを並べてA/B/Cの勝率差を比較できます。",
+    "result": {
+      "unknown": "未定義の案",
+      "segment": "想定セグメント",
+      "winProb": "勝率",
+      "apply": "P(申込)",
+      "purchase": "P(購入)",
+      "d7": "P(D7)"
+    }
+  },
+  "reports": {
+    "title": "レポート生成",
+    "subtitle": "カードを印刷してMVPの成果を共有できます。将来的にはPDF出力へ拡張予定です。",
+    "exportPrint": "印刷ビュー",
+    "callToAction": "レポートを印刷",
+    "target": "ターゲット",
+    "updatedAt": "更新",
+    "price": "価格",
+    "psf": "PSF",
+    "pmf": "PMF",
+    "ci": "95%CI",
+    "contribution": "寄与要因トップ",
+    "nextAction": "改善提案",
+    "nextActionBody": "オンボーディング体験の短縮と価格訴求の再調整により、仮想購入率の改善余地があります。",
+    "footerId": "ID",
+    "totalIdeas": "総案数"
+  }
+}
