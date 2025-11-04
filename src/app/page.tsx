@@ -4,17 +4,9 @@
  */
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import { Cpu, RefreshCw } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
-import { api } from "@/lib/apiClient";
-import { t } from "@/lib/i18n";
-import { useUIStore } from "@/lib/store";
-import { Contribution, Idea, Reaction, Score } from "@/lib/types";
-import { formatPercentRange } from "@/lib/utils";
-import { resolvePersonaRef } from "@/lib/personaRegistry";
-import { isPersonaEverywhereEnabled } from "@/lib/featureFlags";
-import { useProjectStore } from "@/store/projectStore";
 import FactorContributionCard from "@/components/cards/FactorContributionCard";
 import { PsfPmfCard } from "@/components/cards/PsfPmfCard";
 import TrendSparkline from "@/components/charts/TrendSparkline";
@@ -29,6 +21,14 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
+import { api } from "@/lib/apiClient";
+import { isPersonaEverywhereEnabled } from "@/lib/featureFlags";
+import { t } from "@/lib/i18n";
+import { resolvePersonaRef } from "@/lib/personaRegistry";
+import { useUIStore } from "@/lib/store";
+import { Contribution, Idea, Reaction, Score } from "@/lib/types";
+import { formatPercentRange } from "@/lib/utils";
+import { useProjectStore } from "@/store/projectStore";
 
 type MetricCardProps = {
   label: string;
@@ -125,6 +125,7 @@ export default function DashboardPage() {
   const [contribution, setContribution] = useState<Contribution | null>(null);
   const [reactions, setReactions] = useState<Reaction[]>([]);
   const setLoading = useUIStore((state) => state.setLoading);
+  const simulationRevision = useUIStore((state) => state.simulationRevision);
   const [loading, setLocalLoading] = useState(true);
   const [syntheticOnly, setSyntheticOnly] = useState(true);
   const { currentProject, projectLabel } = useProjectStore();
@@ -180,7 +181,7 @@ export default function DashboardPage() {
       mounted = false;
       controller.abort();
     };
-  }, [currentProject, setLoading]);
+  }, [currentProject, setLoading, simulationRevision]);
 
   const metrics = useMemo(() => {
     if (scores.length === 0) return [];

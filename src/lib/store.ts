@@ -9,10 +9,12 @@ export type UIState = {
   filters: { segment?: string; search?: string };
   loading: boolean;
   toast?: { message: string; tone: "success" | "error" | "info" } | null;
+  simulationRevision: number;
   setSelectedIdeaId: (id?: string) => void;
   setFilters: (filters: Partial<UIState["filters"]>) => void;
   setLoading: (value: boolean) => void;
   setToast: (toast: UIState["toast"]) => void;
+  markSimulationRun: () => void;
 };
 
 export const useUIStore = create<UIState>((set) => ({
@@ -20,9 +22,11 @@ export const useUIStore = create<UIState>((set) => ({
   filters: {},
   loading: false,
   toast: null,
+  simulationRevision: 0,
   setSelectedIdeaId: (id) => set({ selectedIdeaId: id }),
   setFilters: (filters) =>
     set((state) => ({ filters: { ...state.filters, ...filters } })),
   setLoading: (value) => set({ loading: value }),
-  setToast: (toast) => set({ toast })
+  setToast: (toast) => set({ toast }),
+  markSimulationRun: () => set({ simulationRevision: Date.now() })
 }));

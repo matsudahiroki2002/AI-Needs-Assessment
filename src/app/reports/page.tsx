@@ -4,13 +4,11 @@
  */
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import { FileDown, Printer } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
-import { api } from "@/lib/apiClient";
-import { t } from "@/lib/i18n";
-import { Idea, Contribution, Score } from "@/lib/types";
-import { formatCurrency, formatDate, verdictTone } from "@/lib/utils";
+import RevenueForecastChart from "@/components/charts/RevenueForecastChart";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,8 +19,11 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/lib/apiClient";
+import { t } from "@/lib/i18n";
+import { Idea, Contribution, Score } from "@/lib/types";
+import { formatCurrency, formatDate, verdictTone } from "@/lib/utils";
 import { useProjectStore } from "@/store/projectStore";
-import { Badge } from "@/components/ui/badge";
 
 type ReportItem = {
   idea: Idea;
@@ -127,7 +128,7 @@ export default function ReportsPage() {
                   </p>
                 </CardHeader>
                 <CardContent className="grid gap-4">
-                  <div className="grid grid-cols-3 gap-3 rounded-2xl border border-border p-4 text-sm">
+                  <div className="grid gap-3 rounded-2xl border border-border p-4 text-sm sm:grid-cols-4">
                     <div>
                       <p className="text-xs text-muted-foreground">{t("reports.psf", "PSF")}</p>
                       <p className="text-xl font-semibold">{score.psf}</p>
@@ -142,7 +143,12 @@ export default function ReportsPage() {
                         {score.ci95.low}–{score.ci95.high}
                       </p>
                     </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">{t("reports.ltv", "顧客LTV予測")}</p>
+                      <p className="text-xl font-semibold">{formatCurrency(score.ltv)}</p>
+                    </div>
                   </div>
+
                   <div className="rounded-2xl border border-border p-4">
                     <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">
                       {t("reports.contribution", "寄与要因トップ")}
@@ -158,17 +164,54 @@ export default function ReportsPage() {
                       ))}
                     </ol>
                   </div>
+
                   <div className="rounded-2xl border border-border p-4">
-                    <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">
-                      {t("reports.nextAction", "改善提案")}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {t(
-                        "reports.nextActionBody",
-                        "オンボーディング体験の短縮と価格訴求の再調整により、仮想購入率の改善余地があります。"
-                      )}
-                    </p>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                        {t("reports.forecast", "売上・利益予測")}
+                      </p>
+                      {score.revenue_forecast.length > 0 ? (
+                        <span className="text-xs text-muted-foreground">
+                          {t("reports.forecastRange", "{{first}}〜{{last}}ヶ月", {
+                            first: score.revenue_forecast[0].month,
+                            last: score.revenue_forecast[score.revenue_forecast.length - 1].month
+                          })}
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="mt-3">
+                      <RevenueForecastChart data={score.revenue_forecast} height={200} />
+                    </div>
+                    <ul className="mt-4 space-y-1 text-xs text-muted-foreground">
+                      {score.revenue_forecast
+                        .slice()
+                        .sort((a, b) => a.month - b.month)
+                        .map((entry) => (
+                          <li key={entry.month} className="flex items-center justify-between gap-3">
+                            <span>{t("reports.forecastMonth", "{{month}}ヶ月", { month: entry.month })}</span>
+                            <span className="text-right">
+                              {formatCurrency(entry.revenue)}
+                              <span className="ml-2 text-muted-foreground/80">
+                                {t("reports.profitLabel", "利益")}: {formatCurrency(entry.profit)}
+                              </span>
+                            </span>
+                          </li>
+                        ))}
+                    </ul>
                   </div>
+
+                  {score.improvement_suggestions.length > 0 ? (
+                    <div className="rounded-2xl border border-border p-4">
+                      <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">
+                        {t("reports.nextAction", "改善提案")}
+                      </p>
+                      <ul className="list-disc space-y-1 pl-4 text-sm text-muted-foreground">
+                        {score.improvement_suggestions.map((suggestion) => (
+                          <li key={suggestion}>{suggestion}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
                 </CardContent>
                 <CardFooter className="flex items-center justify-between text-xs text-muted-foreground">
                   <span>

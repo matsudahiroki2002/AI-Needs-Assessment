@@ -6,10 +6,10 @@
 
 import Link from "next/link";
 
+import { NavMenu } from "@/components/sidebar/NavMenu";
+import { ProjectSelector } from "@/components/sidebar/ProjectSelector";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { ProjectSelector } from "@/components/sidebar/ProjectSelector";
-import { NavMenu } from "@/components/sidebar/NavMenu";
 import { useProjectStore } from "@/store/projectStore";
 
 type AppSidebarProps = {

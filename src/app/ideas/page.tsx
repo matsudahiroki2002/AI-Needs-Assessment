@@ -6,13 +6,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { api } from "@/lib/apiClient";
-import { t } from "@/lib/i18n";
-import { useUIStore } from "@/lib/store";
-import { Idea, Score } from "@/lib/types";
-import { IdeasTable } from "@/components/tables/IdeasTable";
 import { IdeaForm } from "@/components/forms/IdeaForm";
-import { useProjectStore } from "@/store/projectStore";
+import { IdeasTable } from "@/components/tables/IdeasTable";
 import {
   Card,
   CardContent,
@@ -21,6 +16,11 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/lib/apiClient";
+import { t } from "@/lib/i18n";
+import { useUIStore } from "@/lib/store";
+import { Idea, Score } from "@/lib/types";
+import { useProjectStore } from "@/store/projectStore";
 
 export default function IdeasPage() {
   const [ideas, setIdeas] = useState<Idea[]>([]);

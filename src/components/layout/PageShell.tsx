@@ -4,12 +4,13 @@
  * @file Layout shell arranging sidebar, header, and main content for each page.
  * @remarks Keep structural markup stable so backend-driven pages can slot in without layout regressions.
  */
-import { ReactNode } from "react";
 import { AlertCircle, CheckCircle2, Info } from "lucide-react";
+import { ReactNode } from "react";
 
 import { t } from "@/lib/i18n";
 import { useUIStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+
 import { AppHeader } from "./AppHeader";
 import { AppSidebar } from "./AppSidebar";
 

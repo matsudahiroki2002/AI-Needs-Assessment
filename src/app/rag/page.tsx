@@ -4,17 +4,17 @@
  */
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 
-import { api } from "@/lib/apiClient";
-import { t } from "@/lib/i18n";
-import { RagDoc } from "@/lib/types";
 import { RAGTable } from "@/components/tables/RAGTable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/lib/apiClient";
+import { t } from "@/lib/i18n";
+import { RagDoc } from "@/lib/types";
 import { useProjectStore } from "@/store/projectStore";
 
 type RagKind = RagDoc["kind"] | "";
@@ -27,21 +27,24 @@ export default function RagPage() {
   const { currentProject, projectLabel } = useProjectStore();
   const currentProjectLabel = projectLabel(currentProject);
 
-  const fetchDocs = async (params?: { q?: string; kind?: RagDoc["kind"] }) => {
-    setLoading(true);
-    try {
-      const result = await api.getRagDocs({ ...params, projectId: currentProject });
-      setDocs(result);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchDocs = useCallback(
+    async (params?: { q?: string; kind?: RagDoc["kind"] }) => {
+      setLoading(true);
+      try {
+        const result = await api.getRagDocs({ ...params, projectId: currentProject });
+        setDocs(result);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [currentProject]
+  );
 
   useEffect(() => {
     fetchDocs();
-  }, [currentProject]);
+  }, [fetchDocs]);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

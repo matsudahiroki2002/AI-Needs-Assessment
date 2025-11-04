@@ -7,12 +7,12 @@
 import { Settings, Sun, MoonStar, Bell, Search } from "lucide-react";
 import { FormEvent, useMemo, useState } from "react";
 
-import { t } from "@/lib/i18n";
-import { useUIStore } from "@/lib/store";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { t } from "@/lib/i18n";
+import { useUIStore } from "@/lib/store";
+import { cn } from "@/lib/utils";
 
 type AppHeaderProps = {
   className?: string;

@@ -3,11 +3,11 @@
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { Button } from "@/components/ui/button";
 import { api } from "@/lib/apiClient";
 import { useUIStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { useProjectStore } from "@/store/projectStore";
-import { Button } from "@/components/ui/button";
 
 type NewProjectButtonProps = {
   className?: string;

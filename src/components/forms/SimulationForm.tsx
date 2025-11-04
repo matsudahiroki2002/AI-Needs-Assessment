@@ -4,20 +4,20 @@
  */
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 
-import { t } from "@/lib/i18n";
-import { api } from "@/lib/apiClient";
-import { useUIStore } from "@/lib/store";
-import { Idea, SimulationResult } from "@/lib/types";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+import { api } from "@/lib/apiClient";
+import { t } from "@/lib/i18n";
+import { useUIStore } from "@/lib/store";
+import { Idea, SimulationResult } from "@/lib/types";
 
 const simulationSchema = z.object({
   ideaIds: z
@@ -41,6 +41,7 @@ export const SimulationForm = ({ ideas, onSimulated }: SimulationFormProps) => {
   const [submitting, setSubmitting] = useState(false);
   const setToast = useUIStore((state) => state.setToast);
   const setLoading = useUIStore((state) => state.setLoading);
+  const markSimulationRun = useUIStore((state) => state.markSimulationRun);
 
   const {
     register,
@@ -76,6 +77,7 @@ export const SimulationForm = ({ ideas, onSimulated }: SimulationFormProps) => {
         }
       });
       onSimulated(results);
+      markSimulationRun();
       setToast({
         message: t("simulate.toast.success", "シミュレーションを更新しました。"),
         tone: "success"

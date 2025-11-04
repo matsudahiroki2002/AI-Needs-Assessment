@@ -134,6 +134,16 @@ export const scores: Score[] = [
     p_apply: [0.4, 0.56],
     p_purchase: [0.23, 0.35],
     p_d7: [0.45, 0.6],
+    ltv: 82000,
+    revenue_forecast: [
+      { month: 1, revenue: 540000, profit: 216000 },
+      { month: 3, revenue: 1620000, profit: 648000 },
+      { month: 12, revenue: 6520000, profit: 2608000 }
+    ],
+    improvement_suggestions: [
+      "オンボーディングでのAIガイダンスを追加し、初回体験での離脱率を下げる。",
+      "チームアカウント割引をテストし、アップセルからLTVを押し上げる。"
+    ],
     verdict: "Improve"
   },
   {
@@ -146,6 +156,16 @@ export const scores: Score[] = [
     p_apply: [0.36, 0.5],
     p_purchase: [0.2, 0.31],
     p_d7: [0.42, 0.55],
+    ltv: 88000,
+    revenue_forecast: [
+      { month: 1, revenue: 500000, profit: 200000 },
+      { month: 3, revenue: 1510000, profit: 604000 },
+      { month: 12, revenue: 6100000, profit: 2440000 }
+    ],
+    improvement_suggestions: [
+      "テンプレートの人気データをダッシュボード化し、再利用率を高めて継続率を向上させる。",
+      "価格と機能パッケージのバリエーションをA/Bテストし、PMFを確認する。"
+    ],
     verdict: "Improve"
   },
   {
@@ -158,6 +178,16 @@ export const scores: Score[] = [
     p_apply: [0.49, 0.62],
     p_purchase: [0.36, 0.48],
     p_d7: [0.52, 0.64],
+    ltv: 138000,
+    revenue_forecast: [
+      { month: 1, revenue: 980000, profit: 441000 },
+      { month: 3, revenue: 3120000, profit: 1404000 },
+      { month: 12, revenue: 12350000, profit: 5557500 }
+    ],
+    improvement_suggestions: [
+      "POS連携のセットアップフローを最適化し、導入初期の工数を30%削減する。",
+      "ロールプレイの成功事例ライブラリを公開し、現場スタッフの利用継続を促す。"
+    ],
     verdict: "Go"
   },
   {
@@ -170,6 +200,16 @@ export const scores: Score[] = [
     p_apply: [0.46, 0.59],
     p_purchase: [0.32, 0.44],
     p_d7: [0.49, 0.61],
+    ltv: 132000,
+    revenue_forecast: [
+      { month: 1, revenue: 920000, profit: 414000 },
+      { month: 3, revenue: 2880000, profit: 1296000 },
+      { month: 12, revenue: 11600000, profit: 5220000 }
+    ],
+    improvement_suggestions: [
+      "トップ店舗の成功指標をKPIボードで共有し、導入後の活用法を明確にする。",
+      "リーダー向けコーチングプログラムを加え、追加収益とLTVを向上。"
+    ],
     verdict: "Go"
   },
   {
@@ -182,6 +222,16 @@ export const scores: Score[] = [
     p_apply: [0.3, 0.44],
     p_purchase: [0.19, 0.3],
     p_d7: [0.35, 0.48],
+    ltv: 58000,
+    revenue_forecast: [
+      { month: 1, revenue: 320000, profit: 128000 },
+      { month: 3, revenue: 960000, profit: 384000 },
+      { month: 12, revenue: 3660000, profit: 1464000 }
+    ],
+    improvement_suggestions: [
+      "朝活コミュニティの成功体験をSNS広告に活用し、申込率を底上げする。",
+      "法人向けグループプランを追加し、まとめ契約でLTVを引き上げる。"
+    ],
     verdict: "Improve"
   },
   {
@@ -194,42 +244,114 @@ export const scores: Score[] = [
     p_apply: [0.33, 0.47],
     p_purchase: [0.2, 0.33],
     p_d7: [0.37, 0.5],
+    ltv: 61000,
+    revenue_forecast: [
+      { month: 1, revenue: 350000, profit: 140000 },
+      { month: 3, revenue: 1050000, profit: 420000 },
+      { month: 12, revenue: 3800000, profit: 1520000 }
+    ],
+    improvement_suggestions: [
+      "ライブ対話モードの満足度調査を実施し、改善ポイントを次リリースで対応する。",
+      "社内ポータルでの紹介コンテンツを強化し、初回利用の障壁を下げる。"
+    ],
     verdict: "Improve"
   }
 ];
 
 export const personaProfiles: PersonaProfile[] = [
   {
-    id: "persona-startup-lead-01",
-    name: "坂本 海斗",
-    category: "スタートアップ決裁者",
-    age: 32,
-    gender: "男性",
-    background: "SaaSスタートアップ COO。営業とカスタマーサクセス部門を統括。",
-    traits: {
-      novelty: 0.7,
-      price_sensitivity: 0.4,
-      social_dependence: 0.5,
-      brand_loyalty: 0.3
+    id: "persona-innovator-01",
+    persona_name: "坂本 海斗",
+    age_range: "30代",
+    occupation: "スタートアップCOO",
+    seniority: "経営層",
+    location: "東京都 / リモートワーク中心",
+    role_context: "COOとして営業・CS組織を横断管理し、事業拡大を担う。",
+    mission: "ARRを倍増させるための仕組み作りと組織拡張。",
+    decision_authority: "1000万円までの投資判断を単独で決裁可能。",
+    environment: "SaaSスタートアップ / 150名規模 / シリーズC",
+    decision_style: "計画型",
+    background_summary: "コンサル出身で、2社目のスタートアップを支援。データドリブンな経営を好む。",
+    values: ["成長と挑戦", "透明性", "チームの自律性"],
+    motivations: ["市場をリードするプロダクトづくり", "チームを最大パフォーマンスに導く"],
+    success_metrics: ["ARRの前年同期比成長率", "CS解約率", "新規顧客への導入スピード"],
+    pain_points: ["意思決定プロセスが複雑", "導入時の社内教育コスト", "既存ツールとの連携負荷"],
+    buying_triggers: ["ROI試算が明確", "成功事例が豊富", "導入サポートが充実"],
+    objections: ["データセキュリティの懸念", "既存プロセスとの齟齬"],
+    behavior_insights: {
+      routines: "毎朝ダッシュボードで主要指標を確認。週末は業界イベントに参加。",
+      research_channels: ["Quartz", "TechCrunch Japan", "LinkedIn", "Circleコミュニティ"],
+      tools: ["Notion", "Asana", "Amplitude", "Looker"],
+      budget_range: "月額 50〜120万円",
+      decision_timeframe: "2〜3ヶ月で導入判断"
     },
-    comment_style: "冷静分析型",
+    scenario_responses: {
+      evaluating_new_solution: "ROIシミュレーションと既存プロセスへの影響をレビューする。",
+      approval_process: "CEOと財務責任者に2週間以内の合意を取り付ける。",
+      risk_mitigation: "スモールスタートし、パイロットで指標を検証してから全社展開する。"
+    },
+    network: {
+      communities: ["SaaS Leaders Japan", "B Dash Camp"],
+      influencers: ["業界アドバイザー（元COO）", "VCパートナー"],
+      decision_partners: ["CEO", "VP of Sales", "Finance Manager"]
+    },
+    future_outlook: "海外展開を見据えた組織再編と、AI活用による意思決定自動化を進めたい。",
+    traits: {
+      innovation_interest: 5,
+      critical_thinking: 4,
+      frugality: 3,
+      empathy: 3,
+      risk_sensitivity: 4
+    },
+    personality_tags: ["イノベーティブ", "洞察型", "堅実志向"],
     createdAt: ts(5, 12),
     updatedAt: ts(5, 24)
   },
   {
     id: "persona-student-01",
-    name: "村上 彩音",
-    category: "学生",
-    age: 21,
-    gender: "女性",
-    background: "映像専門学校3年。卒業制作でSNS向け短尺動画を制作中。",
-    traits: {
-      novelty: 0.82,
-      price_sensitivity: 0.68,
-      social_dependence: 0.76,
-      brand_loyalty: 0.42
+    persona_name: "村上 彩音",
+    age_range: "20代",
+    occupation: "映像専門学生",
+    seniority: "学生",
+    location: "東京都 / 実家暮らし",
+    role_context: "映像制作専攻3年生。SNSでの作品発信とフリーランス案件を両立。",
+    mission: "卒業制作で受賞し、卒業後はフリーランスとして独立すること。",
+    decision_authority: "学費・制作費は自分の貯蓄とアルバイトで捻出。",
+    environment: "映像専門学校 / 1クラス24名 / 協働制作多数",
+    decision_style: "直感型",
+    background_summary: "高校時代から動画編集を独学。SNSで小規模案件を獲得し、現在も増加中。",
+    values: ["自己表現", "スピード感", "コミュニティとのつながり"],
+    motivations: ["作品が多くの人に届くこと", "スキルアップのフィードバック"],
+    success_metrics: ["SNSでの反応数", "案件単価", "作品の完成度"],
+    pain_points: ["制作環境の整備コスト", "締切の重複", "クライアントコミュニケーション"],
+    buying_triggers: ["無料トライアルの有無", "実績あるクリエイターの推薦", "時短につながる機能"],
+    objections: ["学習コストが高そう", "月額費用の負担", "操作が複雑"],
+    behavior_insights: {
+      routines: "毎朝SNSでトレンドチェックし、夜に編集時間を確保。",
+      research_channels: ["YouTube", "TikTok", "Discordコミュニティ", "note"],
+      tools: ["Premiere Pro", "After Effects", "Figma", "Notion"],
+      budget_range: "月額 5〜12万円（ツール・学習費）",
+      decision_timeframe: "興味があれば即日〜1週間で導入"
     },
-    comment_style: "フレンドリー",
+    scenario_responses: {
+      evaluating_new_solution: "使っているクリエイターの作例や声を探して判断。",
+      approval_process: "必要あれば講師・先輩に相談してレビューをもらう。",
+      risk_mitigation: "トライアルでテストし、案件で使えるかを確認後に有料移行。"
+    },
+    network: {
+      communities: ["映像研究サークル", "クリエイターGuild", "note合評会"],
+      influencers: ["人気映像クリエイター2名"],
+      decision_partners: ["制作チームのメンバー", "講師"]
+    },
+    future_outlook: "海外案件への対応やCG分野への挑戦を視野に入れている。",
+    traits: {
+      innovation_interest: 4,
+      critical_thinking: 2,
+      frugality: 2,
+      empathy: 4,
+      risk_sensitivity: 2
+    },
+    personality_tags: ["好奇心旺盛", "共感型", "挑戦型"],
     createdAt: ts(5, 5),
     updatedAt: ts(5, 26)
   }

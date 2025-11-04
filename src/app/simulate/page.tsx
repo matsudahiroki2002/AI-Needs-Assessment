@@ -6,11 +6,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { api } from "@/lib/apiClient";
-import { t } from "@/lib/i18n";
-import { useUIStore } from "@/lib/store";
-import { Idea, SimulationResult } from "@/lib/types";
-import { formatPercent } from "@/lib/utils";
 import { SimulationForm } from "@/components/forms/SimulationForm";
 import {
   Card,
@@ -20,6 +15,11 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/lib/apiClient";
+import { t } from "@/lib/i18n";
+import { useUIStore } from "@/lib/store";
+import { Idea, SimulationResult } from "@/lib/types";
+import { formatPercent } from "@/lib/utils";
 import { useProjectStore } from "@/store/projectStore";
 
 const ResultCard = ({

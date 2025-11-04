@@ -1,0 +1,23 @@
+
+> needs-research-app@0.1.0 dev
+> next dev
+
+ ⨯ Failed to start server
+Error: listen EPERM: operation not permitted 0.0.0.0:3000
+    at Server.setupListenHandle [as _listen2] (node:net:1918:21)
+    at listenInCluster (node:net:1997:12)
+    at Server.listen (node:net:2102:7)
+    at /Users/matsuda-hiroki/Desktop/ニーズ調査App/node_modules/.pnpm/next@15.0.0-canary.120_react-dom@19.0.0-rc-49496d49-20240814_react@19.0.0-rc-49496d49-2_ce8b2e15eef1a4fab77346c2ab9c9f58/node_modules/next/dist/server/lib/start-server.js:297:16
+    at new Promise (<anonymous>)
+    at startServer (/Users/matsuda-hiroki/Desktop/ニーズ調査App/node_modules/.pnpm/next@15.0.0-canary.120_react-dom@19.0.0-rc-49496d49-20240814_react@19.0.0-rc-49496d49-2_ce8b2e15eef1a4fab77346c2ab9c9f58/node_modules/next/dist/server/lib/start-server.js:191:11)
+    at /Users/matsuda-hiroki/Desktop/ニーズ調査App/node_modules/.pnpm/next@15.0.0-canary.120_react-dom@19.0.0-rc-49496d49-20240814_react@19.0.0-rc-49496d49-2_ce8b2e15eef1a4fab77346c2ab9c9f58/node_modules/next/dist/server/lib/start-server.js:327:52
+    at Span.traceAsyncFn (/Users/matsuda-hiroki/Desktop/ニーズ調査App/node_modules/.pnpm/next@15.0.0-canary.120_react-dom@19.0.0-rc-49496d49-20240814_react@19.0.0-rc-49496d49-2_ce8b2e15eef1a4fab77346c2ab9c9f58/node_modules/next/dist/trace/trace.js:157:26)
+    at process.<anonymous> (/Users/matsuda-hiroki/Desktop/ニーズ調査App/node_modules/.pnpm/next@15.0.0-canary.120_react-dom@19.0.0-rc-49496d49-20240814_react@19.0.0-rc-49496d49-2_ce8b2e15eef1a4fab77346c2ab9c9f58/node_modules/next/dist/server/lib/start-server.js:327:35)
+    at process.emit (node:events:518:28) {
+  code: 'EPERM',
+  errno: -1,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 3000
+}
+[?25h

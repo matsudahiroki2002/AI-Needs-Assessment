@@ -6,9 +6,6 @@
 
 import { useMemo } from "react";
 
-import { t } from "@/lib/i18n";
-import { Reaction } from "@/lib/types";
-import { formatDate, formatPercent } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +16,9 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
+import { t } from "@/lib/i18n";
+import { Reaction } from "@/lib/types";
+import { formatDate, formatPercent } from "@/lib/utils";
 
 type ReactionsTableProps = {
   reactions: Reaction[];

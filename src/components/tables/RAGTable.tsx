@@ -2,9 +2,7 @@
  * @file Retrieval augmented generation source table with filtering support.
  * @remarks Keep data props aligned with RagDoc schema for backend compatibility.
  */
-import { t } from "@/lib/i18n";
-import { RagDoc } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -13,7 +11,9 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+import { t } from "@/lib/i18n";
+import { RagDoc } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
 
 type RAGTableProps = {
   docs: RagDoc[];

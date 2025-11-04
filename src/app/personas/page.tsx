@@ -6,19 +6,19 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { FiltersBar } from "@/components/forms/FiltersBar";
+import PersonaEditor from "@/components/personas/PersonaEditor";
+import { PersonaRegistryList } from "@/components/tables/PersonaRegistryList";
+import { PersonasTable } from "@/components/tables/PersonasTable";
+import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/lib/apiClient";
+import { isPersonaEverywhereEnabled } from "@/lib/featureFlags";
 import { t } from "@/lib/i18n";
+import { logLegacyAgentUsage, resolvePersonaRef } from "@/lib/personaRegistry";
 import { useUIStore } from "@/lib/store";
 import { Persona } from "@/lib/types";
-import { logLegacyAgentUsage, resolvePersonaRef } from "@/lib/personaRegistry";
-import { isPersonaEverywhereEnabled } from "@/lib/featureFlags";
-import { FiltersBar } from "@/components/forms/FiltersBar";
-import { PersonaForm } from "@/components/forms/PersonaForm";
-import { Skeleton } from "@/components/ui/skeleton";
-import { PersonasTable } from "@/components/tables/PersonasTable";
-import { PersonaRegistryList } from "@/components/tables/PersonaRegistryList";
-import { useProjectStore } from "@/store/projectStore";
 import { usePersonaStore } from "@/store/personaStore";
+import { useProjectStore } from "@/store/projectStore";
 
 type TraitFilters = {
   novelty: number;
@@ -137,28 +137,28 @@ export default function PersonasPage() {
         </p>
       </section>
 
-      <section className="grid gap-6 rounded-2xl border border-border bg-card/40 p-6 shadow-lg lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)]">
-        <div className="space-y-4">
-          <div>
-            <h2 className="text-xl font-semibold">デジタルツインを登録</h2>
+      <section className="grid gap-6 rounded-2xl border border-border bg-card/40 p-6 shadow-lg lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+        <div className="space-y-4 lg:col-span-1">
+          <div className="space-y-1">
+            <h2 className="text-xl font-semibold">ペルソナエディタ</h2>
             <p className="text-sm text-muted-foreground">
-              実在の友人や顧客をモデルにしたペルソナを登録し、反応生成に活用します。
+              属性や思考傾向を入力し、性格タグ付きのペルソナ定義を作成します。
             </p>
           </div>
-          <PersonaForm />
+          <PersonaEditor showHeader={false} className="space-y-4" />
         </div>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold">登録済みペルソナ</h2>
             <p className="text-xs text-muted-foreground">
-              現在 {registered.length} 名（カテゴリ：
-              {Array.from(new Set(registered.map((item) => item.category))).join(" / ") || "未登録"}）
+              現在 {registered.length} 名（主な職種：
+              {Array.from(new Set(registered.map((item) => item.occupation))).join(" / ") || "未登録"}）
             </p>
           </div>
           <PersonaRegistryList personas={registered} loading={registeredLoading} />
           {registered.length === 0 && (
             <div className="rounded-2xl bg-primary/5 p-4 text-xs text-primary">
-              推奨カテゴリは「スタートアップ決裁者」「学生」です。必要に応じて他カテゴリも追加できます。
+              ペルソナエディタでプロフィールとスコアを入力し、「性格タグを生成」してみましょう。
             </div>
           )}
         </div>

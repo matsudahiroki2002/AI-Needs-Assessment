@@ -4,19 +4,13 @@
  */
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import { Lightbulb, Wand2 } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { api } from "@/lib/apiClient";
-import { t } from "@/lib/i18n";
-import { useUIStore } from "@/lib/store";
-import { Contribution, Idea, Reaction, Score } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
-import { ScoreSummaryCard } from "@/components/cards/ScoreSummaryCard";
 import FactorContributionCard from "@/components/cards/FactorContributionCard";
+import { ScoreSummaryCard } from "@/components/cards/ScoreSummaryCard";
 import { ReactionsTable } from "@/components/tables/ReactionsTable";
-import { useProjectStore } from "@/store/projectStore";
 import {
   Card,
   CardContent,
@@ -25,6 +19,12 @@ import {
   CardTitle
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/lib/apiClient";
+import { t } from "@/lib/i18n";
+import { useUIStore } from "@/lib/store";
+import { Contribution, Idea, Reaction, Score } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
+import { useProjectStore } from "@/store/projectStore";
 
 const PAGE_SIZE = 6;
 

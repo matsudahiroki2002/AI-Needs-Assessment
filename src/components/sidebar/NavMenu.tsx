@@ -1,11 +1,11 @@
 "use client";
 
+import { Gauge, Lightbulb, Users, BookOpen, FlaskConical, FileBarChart2 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Gauge, Lightbulb, Users, BookOpen, FlaskConical, FileBarChart2 } from "lucide-react";
 
-import { useProjectStore } from "@/store/projectStore";
 import { cn } from "@/lib/utils";
+import { useProjectStore } from "@/store/projectStore";
 
 const NAV_ITEMS = [
   { href: "dashboard", label: "ダッシュボード", icon: Gauge },

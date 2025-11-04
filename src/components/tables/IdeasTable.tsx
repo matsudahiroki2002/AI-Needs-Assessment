@@ -4,13 +4,11 @@
  */
 "use client";
 
+import { ArrowUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { ArrowUpDown } from "lucide-react";
 
-import { t } from "@/lib/i18n";
-import { useUIStore } from "@/lib/store";
-import { formatCurrency, formatDate } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -20,8 +18,10 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
+import { t } from "@/lib/i18n";
+import { useUIStore } from "@/lib/store";
 import { Idea, Score } from "@/lib/types";
-import { Badge } from "@/components/ui/badge";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import { useProjectStore } from "@/store/projectStore";
 
 type IdeasTableProps = {

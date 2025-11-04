@@ -4,8 +4,6 @@
  */
 import dynamic from "next/dynamic";
 
-import { t } from "@/lib/i18n";
-import { Contribution } from "@/lib/types";
 import {
   Card,
   CardContent,
@@ -13,6 +11,8 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
+import { t } from "@/lib/i18n";
+import { Contribution } from "@/lib/types";
 
 const ContributionBar = dynamic(() => import("../charts/ContributionBar"), {
   ssr: false,

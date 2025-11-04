@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
+import { NewProjectButton } from "@/components/sidebar/NewProjectButton";
+import { Select } from "@/components/ui/select";
 import { api } from "@/lib/apiClient";
 import { useUIStore } from "@/lib/store";
-import { Select } from "@/components/ui/select";
-import { NewProjectButton } from "@/components/sidebar/NewProjectButton";
 import { useProjectStore } from "@/store/projectStore";
 
 export const ProjectSelector = () => {

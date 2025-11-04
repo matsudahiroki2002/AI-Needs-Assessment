@@ -24,6 +24,12 @@ export type Idea = {
   updatedAt: string;
 };
 
+export type RevenueForecast = {
+  month: number;
+  revenue: number;
+  profit: number;
+};
+
 export type Score = {
   ideaId: string;
   projectId?: string;
@@ -34,6 +40,9 @@ export type Score = {
   p_apply: [number, number];
   p_purchase: [number, number];
   p_d7: [number, number];
+  ltv: number;
+  revenue_forecast: RevenueForecast[];
+  improvement_suggestions: string[];
   verdict: "Go" | "Improve" | "Kill";
 };
 
@@ -44,23 +53,53 @@ export type Contribution = {
   factors: { name: string; value: number }[];
 };
 
-export type PersonaCategory =
-  | "大企業決裁者"
-  | "VC"
-  | "スタートアップ決裁者"
-  | "デザイナー"
-  | "学生"
-  | "主婦";
+export type PersonaTraitScores = {
+  innovation_interest: number;
+  critical_thinking: number;
+  frugality: number;
+  empathy: number;
+  risk_sensitivity: number;
+};
 
 export type PersonaProfile = {
   id: string;
-  name: string;
-  category: PersonaCategory;
-  age?: number;
-  gender?: string;
-  background?: string;
-  traits?: Record<string, number>;
-  comment_style?: string;
+  persona_name: string;
+  age_range: string;
+  occupation: string;
+  seniority?: string;
+  location?: string;
+  role_context?: string;
+  mission?: string;
+  decision_authority?: string;
+  environment?: string;
+  decision_style?: string;
+  background_summary?: string;
+  values: string[];
+  motivations: string[];
+  success_metrics: string[];
+  pain_points: string[];
+  buying_triggers: string[];
+  objections: string[];
+  behavior_insights: {
+    routines?: string;
+    research_channels: string[];
+    tools: string[];
+    budget_range?: string;
+    decision_timeframe?: string;
+  };
+  scenario_responses: {
+    evaluating_new_solution?: string;
+    approval_process?: string;
+    risk_mitigation?: string;
+  };
+  network: {
+    communities: string[];
+    influencers: string[];
+    decision_partners: string[];
+  };
+  future_outlook?: string;
+  traits: PersonaTraitScores;
+  personality_tags: string[];
   createdAt?: string;
   updatedAt?: string;
 };
@@ -70,7 +109,7 @@ export type PersonaRef = {
   slug?: string;
   displayName: string;
   legacyAgentId?: string;
-  category?: PersonaCategory | string;
+  category?: string;
   segment?: string;
 };
 
@@ -133,4 +172,9 @@ export type SimulationResult = {
   ci95?: { low: number; high: number };
   personaReactions: SimulationPersonaReaction[];
   summaryComment: string;
+};
+
+export type SimulationResponsePayload = {
+  results: SimulationResult[];
+  updatedScores: Score[];
 };

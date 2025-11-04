@@ -2,11 +2,6 @@
  * @file Persona table summarising synthetic persona attributes.
  * @remarks Maintain semantic descriptions for each numeric trait to support future localisation.
  */
-import { t } from "@/lib/i18n";
-import { Persona } from "@/lib/types";
-import { formatCurrency } from "@/lib/utils";
-import { isPersonaEverywhereEnabled } from "@/lib/featureFlags";
-import { resolvePersonaRef } from "@/lib/personaRegistry";
 import {
   Table,
   TableBody,
@@ -15,6 +10,11 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
+import { isPersonaEverywhereEnabled } from "@/lib/featureFlags";
+import { t } from "@/lib/i18n";
+import { resolvePersonaRef } from "@/lib/personaRegistry";
+import { Persona } from "@/lib/types";
+import { formatCurrency } from "@/lib/utils";
 
 type PersonasTableProps = {
   personas: Persona[];
