@@ -812,8 +812,11 @@ ${JSON.stringify(userPayload, null, 2)}
     const revenueForecast = sanitizeRevenueForecast(entry.revenue_forecast, fallbackScore.revenue_forecast);
     const improvementSuggestions = sanitizeStringArray(entry.improvement_suggestions, fallbackScore.improvement_suggestions);
 
-    const buildFallbackReactions = () =>
-      personas.slice(0, 3).map((persona) => ({
+    const buildFallbackReactions = (count: number, excludeIds?: Set<string>) => {
+      const available = personas.filter((persona) =>
+        excludeIds ? !excludeIds.has(persona.id) : true
+      );
+      return available.slice(0, count).map((persona) => ({
         personaId: persona.id,
         personaName: persona.persona_name,
         category: `${persona.age_range} / ${persona.occupation}`,
@@ -821,6 +824,9 @@ ${JSON.stringify(userPayload, null, 2)}
         intent_to_try: 0.54,
         price_acceptance: 0.48
       }));
+    };
+
+    const MAX_REACTIONS = 10;
 
     const personaReactions: SimulationPersonaReaction[] = Array.isArray(entry.personaReactions) && entry.personaReactions.length > 0
       ? entry.personaReactions.map((reaction: any, index: number) => {
@@ -834,7 +840,23 @@ ${JSON.stringify(userPayload, null, 2)}
             price_acceptance: clampProbability(reaction.price_acceptance ?? reaction.price ?? 0.5)
           };
         })
-      : buildFallbackReactions();
+      : buildFallbackReactions(MAX_REACTIONS);
+
+    const seenPersonaIds = new Set(
+      personaReactions.map((reaction) => reaction.personaId).filter(Boolean)
+    );
+
+    if (personaReactions.length < MAX_REACTIONS) {
+      const supplemental = buildFallbackReactions(
+        MAX_REACTIONS - personaReactions.length,
+        seenPersonaIds
+      );
+      personaReactions.push(...supplemental);
+    }
+
+    if (personaReactions.length > MAX_REACTIONS) {
+      personaReactions.splice(MAX_REACTIONS);
+    }
 
     const timestamp = new Date().toISOString();
     personaReactions.forEach((reaction) => {
