@@ -260,100 +260,196 @@ export const scores: Score[] = [
 
 export const personaProfiles: PersonaProfile[] = [
   {
-    id: "persona-innovator-01",
-    persona_name: "坂本 海斗",
-    age_range: "30代",
-    occupation: "スタートアップCOO",
-    seniority: "経営層",
-    location: "東京都 / リモートワーク中心",
-    role_context: "COOとして営業・CS組織を横断管理し、事業拡大を担う。",
-    mission: "ARRを倍増させるための仕組み作りと組織拡張。",
-    decision_authority: "1000万円までの投資判断を単独で決裁可能。",
-    environment: "SaaSスタートアップ / 150名規模 / シリーズC",
+    id: "persona-matsuda-daiki",
+    persona_name: "松田 大喜",
+    age_range: "20代",
+    occupation: "SESエンジニア",
+    seniority: "学生",
+    location: "東京都",
+    role_context: "新規事業を開発しまくり大当てすることに注力している。",
+    mission: "新規事業を開発しまくり大当てする。",
+    decision_authority: "MAX50万？",
+    environment: "SES、10名弱規模",
     decision_style: "計画型",
-    background_summary: "コンサル出身で、2社目のスタートアップを支援。データドリブンな経営を好む。",
-    values: ["成長と挑戦", "透明性", "チームの自律性"],
-    motivations: ["市場をリードするプロダクトづくり", "チームを最大パフォーマンスに導く"],
-    success_metrics: ["ARRの前年同期比成長率", "CS解約率", "新規顧客への導入スピード"],
-    pain_points: ["意思決定プロセスが複雑", "導入時の社内教育コスト", "既存ツールとの連携負荷"],
-    buying_triggers: ["ROI試算が明確", "成功事例が豊富", "導入サポートが充実"],
-    objections: ["データセキュリティの懸念", "既存プロセスとの齟齬"],
+    background_summary: "都立高校、東大出身。2回留年。アクセンチュア就職予定。",
+    values: ["圧倒的成長"],
+    motivations: ["最強の男になりたい"],
+    success_metrics: ["昨日の自分に勝ってるか？"],
+    pain_points: ["昨日の自分に負けてるかもしれない"],
+    buying_triggers: ["コスパ、新規性"],
+    objections: ["予算不足"],
     behavior_insights: {
-      routines: "毎朝ダッシュボードで主要指標を確認。週末は業界イベントに参加。",
-      research_channels: ["Quartz", "TechCrunch Japan", "LinkedIn", "Circleコミュニティ"],
-      tools: ["Notion", "Asana", "Amplitude", "Looker"],
-      budget_range: "月額 50〜120万円",
-      decision_timeframe: "2〜3ヶ月で導入判断"
+      routines: "開発、勉強、筋トレを習慣にする（ことを目標にしている）",
+      research_channels: ["X"],
+      tools: ["ChatGPT"],
+      budget_range: "月額1〜20万円",
+      decision_timeframe: "最短即日で導入判断"
     },
     scenario_responses: {
-      evaluating_new_solution: "ROIシミュレーションと既存プロセスへの影響をレビューする。",
-      approval_process: "CEOと財務責任者に2週間以内の合意を取り付ける。",
-      risk_mitigation: "スモールスタートし、パイロットで指標を検証してから全社展開する。"
+      evaluating_new_solution: "ワクワクしてしまう",
+      approval_process: "CEOと財務責任者の合意を2週間以内に取得。",
+      risk_mitigation: "スモールスタートで検証し、指標を見て全社展開を判断。"
     },
     network: {
-      communities: ["SaaS Leaders Japan", "B Dash Camp"],
-      influencers: ["業界アドバイザー（元COO）", "VCパートナー"],
-      decision_partners: ["CEO", "VP of Sales", "Finance Manager"]
+      communities: ["かわいい界隈"],
+      influencers: ["藍染惣右介"],
+      decision_partners: ["CEO"]
     },
-    future_outlook: "海外展開を見据えた組織再編と、AI活用による意思決定自動化を進めたい。",
+    future_outlook: "バイバー組織としての成長、AI Wrapperとしてのプロダクト量産を目指す。",
+    traits: {
+      innovation_interest: 5,
+      critical_thinking: 3,
+      frugality: 2,
+      empathy: 5,
+      risk_sensitivity: 2
+    },
+    personality_tags: ["挑戦型", "成長志向"],
+    createdAt: ts(5, 1),
+    updatedAt: ts(5, 28)
+  },
+  {
+    id: "persona-egami-kosuke",
+    persona_name: "江上 広介",
+    age_range: "20代",
+    occupation: "IT開発会社代表",
+    seniority: "自営業",
+    location: "東京都",
+    role_context: "事業計画の策定から営業・開発まで一人で担う。",
+    mission: "世界規模で使われるプロダクトの開発",
+    decision_authority: "未定",
+    environment: "一人会社",
+    decision_style: "えいや型",
+    background_summary: "都立高校、早稲田大卒。受託開発会社での経験を経てフリーランスに。プロダクト開発のため会社を設立。",
+    values: ["何を作ったか"],
+    motivations: ["新しいものを作りたい"],
+    success_metrics: ["いいものが作れているか？"],
+    pain_points: ["いいものが作れていないかもしれない"],
+    buying_triggers: ["性能", "生産性向上"],
+    objections: ["既存の組み合わせでできる"],
+    behavior_insights: {
+      routines: "ない",
+      research_channels: ["X", "Gigazine", "Reddit"],
+      tools: ["ChatGPT", "Gemini", "Claude", "Github Copilot"],
+      budget_range: "月額10万円",
+      decision_timeframe: "1週間ほど"
+    },
+    scenario_responses: {
+      evaluating_new_solution: "批判的に考える。新規性があるかを見る",
+      approval_process: "私がOKすればOK",
+      risk_mitigation: "クライアントがいれば謝罪・対応報告して修正対応する。"
+    },
+    network: {
+      communities: ["AI界隈"],
+      influencers: ["アラン・ケイ", "ピーター・ティール"],
+      decision_partners: ["自分"]
+    },
+    future_outlook: "金持ちにならなくてもいいけど、でかいことやっていたい。",
+    traits: {
+      innovation_interest: 5,
+      critical_thinking: 5,
+      frugality: 3,
+      empathy: 2,
+      risk_sensitivity: 3
+    },
+    personality_tags: ["ビルダー", "批判的思考"],
+    createdAt: ts(5, 2),
+    updatedAt: ts(5, 28)
+  },
+  {
+    id: "persona-kosuge-shuji",
+    persona_name: "小菅 秀二",
+    age_range: "20代",
+    occupation: "SESエンジニア",
+    seniority: "フリーター",
+    location: "東京都",
+    role_context: "受託案件の開発実装を担当。",
+    mission: "夢をみる",
+    decision_authority: "価値に見合った金額",
+    environment: "SES、10名弱規模",
+    decision_style: "慎重型",
+    background_summary: "私立高校中退、通信制高校卒業後、フリーターとして開発に従事。",
+    values: ["面白い方へ"],
+    motivations: ["特化型になりたい"],
+    success_metrics: ["マイナスを覆せるほどの強さを持っているか"],
+    pain_points: ["考えすぎて思い切りが弱い"],
+    buying_triggers: ["文句が出ないほどの完璧さ"],
+    objections: ["後手に回る"],
+    behavior_insights: {
+      routines: "仕事",
+      research_channels: ["X"],
+      tools: ["ChatGPT", "Cursor"],
+      budget_range: "月額1〜20万円",
+      decision_timeframe: "完璧な結論が出てから"
+    },
+    scenario_responses: {
+      evaluating_new_solution: "感動する",
+      approval_process: "チームで話し合ってCEOが決定",
+      risk_mitigation: "できる範囲を即対応して時間に余裕を作って大きいところの対応をする"
+    },
+    network: {
+      communities: ["二郎界隈"],
+      influencers: ["いろんな人のいいと思ったところをいただく"],
+      decision_partners: ["チームメンバー全員"]
+    },
+    future_outlook: "スーパーエンジニアとして活躍することを目指す。",
     traits: {
       innovation_interest: 5,
       critical_thinking: 4,
-      frugality: 3,
+      frugality: 2,
       empathy: 3,
-      risk_sensitivity: 4
+      risk_sensitivity: 5
     },
-    personality_tags: ["イノベーティブ", "洞察型", "堅実志向"],
-    createdAt: ts(5, 12),
-    updatedAt: ts(5, 24)
+    personality_tags: ["慎重派", "職人肌"],
+    createdAt: ts(5, 3),
+    updatedAt: ts(5, 28)
   },
   {
-    id: "persona-student-01",
-    persona_name: "村上 彩音",
+    id: "persona-kosuge-taihei",
+    persona_name: "小菅 太平",
     age_range: "20代",
-    occupation: "映像専門学生",
-    seniority: "学生",
-    location: "東京都 / 実家暮らし",
-    role_context: "映像制作専攻3年生。SNSでの作品発信とフリーランス案件を両立。",
-    mission: "卒業制作で受賞し、卒業後はフリーランスとして独立すること。",
-    decision_authority: "学費・制作費は自分の貯蓄とアルバイトで捻出。",
-    environment: "映像専門学校 / 1クラス24名 / 協働制作多数",
-    decision_style: "直感型",
-    background_summary: "高校時代から動画編集を独学。SNSで小規模案件を獲得し、現在も増加中。",
-    values: ["自己表現", "スピード感", "コミュニティとのつながり"],
-    motivations: ["作品が多くの人に届くこと", "スキルアップのフィードバック"],
-    success_metrics: ["SNSでの反応数", "案件単価", "作品の完成度"],
-    pain_points: ["制作環境の整備コスト", "締切の重複", "クライアントコミュニケーション"],
-    buying_triggers: ["無料トライアルの有無", "実績あるクリエイターの推薦", "時短につながる機能"],
-    objections: ["学習コストが高そう", "月額費用の負担", "操作が複雑"],
+    occupation: "SES会社代表",
+    seniority: "自営業",
+    location: "東京都",
+    role_context: "CEOとして組織運営とクライアント管理を担う。",
+    mission: "会社の成長に責任を持つ",
+    decision_authority: "50万",
+    environment: "SES、10名弱規模",
+    decision_style: "計画型",
+    background_summary: "都立高校、早稲田理工卒業。2回留年を経て大学院進学予定で学生起業。",
+    values: ["好奇心を満たす"],
+    motivations: ["好奇心を最大限満たしたい"],
+    success_metrics: ["新しい学びがあったか"],
+    pain_points: ["羽ばたきが我慢できない、生き急いでしまう"],
+    buying_triggers: ["定性的・定量的な側面を総合し経営的メリットがあるか"],
+    objections: ["予算不足"],
     behavior_insights: {
-      routines: "毎朝SNSでトレンドチェックし、夜に編集時間を確保。",
-      research_channels: ["YouTube", "TikTok", "Discordコミュニティ", "note"],
-      tools: ["Premiere Pro", "After Effects", "Figma", "Notion"],
-      budget_range: "月額 5〜12万円（ツール・学習費）",
-      decision_timeframe: "興味があれば即日〜1週間で導入"
+      routines: "仕事、勉強、飲み会",
+      research_channels: ["読書", "X"],
+      tools: ["ChatGPT", "Canva"],
+      budget_range: "月額1〜20万円",
+      decision_timeframe: "1週間から1ヶ月程度"
     },
     scenario_responses: {
-      evaluating_new_solution: "使っているクリエイターの作例や声を探して判断。",
-      approval_process: "必要あれば講師・先輩に相談してレビューをもらう。",
-      risk_mitigation: "トライアルでテストし、案件で使えるかを確認後に有料移行。"
+      evaluating_new_solution: "ポジティブな側面ばかり見る",
+      approval_process: "役員会議で決定",
+      risk_mitigation: "落ち着くことを意識する"
     },
     network: {
-      communities: ["映像研究サークル", "クリエイターGuild", "note合評会"],
-      influencers: ["人気映像クリエイター2名"],
-      decision_partners: ["制作チームのメンバー", "講師"]
+      communities: ["２留界隈"],
+      influencers: ["実業家", "少年漫画の主人公"],
+      decision_partners: ["役員"]
     },
-    future_outlook: "海外案件への対応やCG分野への挑戦を視野に入れている。",
+    future_outlook: "会社の急成長により環境は大きく変化するだろう。",
     traits: {
-      innovation_interest: 4,
+      innovation_interest: 3,
       critical_thinking: 2,
       frugality: 2,
-      empathy: 4,
-      risk_sensitivity: 2
+      empathy: 5,
+      risk_sensitivity: 3
     },
-    personality_tags: ["好奇心旺盛", "共感型", "挑戦型"],
-    createdAt: ts(5, 5),
-    updatedAt: ts(5, 26)
+    personality_tags: ["好奇心旺盛", "共感型"],
+    createdAt: ts(5, 4),
+    updatedAt: ts(5, 28)
   }
 ];
 

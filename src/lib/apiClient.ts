@@ -41,70 +41,196 @@ const personaStore: Persona[] = [...seededPersonas];
 const personaRegistryStore: PersonaProfile[] = [...seededPersonaProfiles];
 const defaultSimulationPersonaPool: PersonaProfile[] = [
   {
-    id: "persona-demo-a",
-    persona_name: "モック学生A",
+    id: "persona-matsuda-daiki",
+    persona_name: "松田 大喜",
     age_range: "20代",
-    occupation: "動画クリエイター志望",
-    decision_style: "直感型",
-    values: ["自己表現"],
-    motivations: ["作品を多くの人に届けたい"],
-    success_metrics: ["SNSでの反応数"],
-    pain_points: ["制作時間の不足"],
-    buying_triggers: ["即効性のある時短機能"],
-    objections: ["高額なサブスク費用"],
+    occupation: "SESエンジニア",
+    seniority: "学生",
+    location: "東京都",
+    role_context: "新規事業を開発しまくり大当てすることに注力している。",
+    mission: "新規事業を開発しまくり大当てする。",
+    decision_authority: "MAX50万？",
+    environment: "SES、10名弱規模",
+    decision_style: "計画型",
+    background_summary: "都立高校、東大出身。2回留年。アクセンチュア就職予定。",
+    values: ["圧倒的成長"],
+    motivations: ["最強の男になりたい"],
+    success_metrics: ["昨日の自分に勝ってるか？"],
+    pain_points: ["昨日の自分に負けてるかもしれない"],
+    buying_triggers: ["コスパ、新規性"],
+    objections: ["予算不足"],
     behavior_insights: {
-      research_channels: ["YouTube", "TikTok"],
-      tools: ["Premiere Pro", "Notion"]
+      routines: "開発、勉強、筋トレを習慣にする（ことを目標にしている）",
+      research_channels: ["X"],
+      tools: ["ChatGPT"],
+      budget_range: "月額1〜20万円",
+      decision_timeframe: "最短即日で導入判断"
     },
-    scenario_responses: {},
+    scenario_responses: {
+      evaluating_new_solution: "ワクワクしてしまう",
+      approval_process: "CEOと財務責任者の合意を2週間以内に取得。",
+      risk_mitigation: "スモールスタートで検証し、指標を見て全社展開を判断。"
+    },
     network: {
-      communities: [],
-      influencers: [],
-      decision_partners: []
+      communities: ["かわいい界隈"],
+      influencers: ["藍染惣右介"],
+      decision_partners: ["CEO"]
     },
+    future_outlook: "バイバー組織としての成長、AI Wrapperとしてのプロダクト量産を目指す。",
     traits: {
-      innovation_interest: 4,
-      critical_thinking: 2,
-      frugality: 3,
-      empathy: 4,
+      innovation_interest: 5,
+      critical_thinking: 3,
+      frugality: 2,
+      empathy: 5,
       risk_sensitivity: 2
     },
-    personality_tags: ["好奇心旺盛", "挑戦型"],
-    createdAt: "2024-01-05T09:00:00.000Z",
-    updatedAt: "2024-01-05T09:00:00.000Z"
+    personality_tags: ["挑戦型", "成長志向"],
+    createdAt: "2024-05-01T09:00:00.000Z",
+    updatedAt: "2024-05-28T09:00:00.000Z"
   },
   {
-    id: "persona-demo-b",
-    persona_name: "モック決裁者B",
-    age_range: "30代",
-    occupation: "スタートアップCOO",
-    decision_style: "計画型",
-    values: ["成長と挑戦"],
-    motivations: ["チームを高い成果へ導く"],
-    success_metrics: ["ARR成長率"],
-    pain_points: ["導入時の社内調整"],
-    buying_triggers: ["ROIの明確化"],
-    objections: ["リスクが不透明"],
+    id: "persona-egami-kosuke",
+    persona_name: "江上 広介",
+    age_range: "20代",
+    occupation: "IT開発会社代表",
+    seniority: "自営業",
+    location: "東京都",
+    role_context: "事業計画の策定から営業・開発まで一人で担う。",
+    mission: "世界規模で使われるプロダクトの開発",
+    decision_authority: "未定",
+    environment: "一人会社",
+    decision_style: "えいや型",
+    background_summary: "都立高校、早稲田大卒。受託開発会社での経験を経て独立し、プロダクト開発のため会社を設立。",
+    values: ["何を作ったか"],
+    motivations: ["新しいものを作りたい"],
+    success_metrics: ["いいものが作れているか？"],
+    pain_points: ["いいものが作れていないかもしれない"],
+    buying_triggers: ["性能", "生産性向上"],
+    objections: ["既存の組み合わせでできる"],
     behavior_insights: {
-      research_channels: ["LinkedIn"],
-      tools: ["Notion", "Asana"]
+      routines: "ない",
+      research_channels: ["X", "Gigazine", "Reddit"],
+      tools: ["ChatGPT", "Gemini", "Claude", "Github Copilot"],
+      budget_range: "月額10万円",
+      decision_timeframe: "1週間ほど"
     },
-    scenario_responses: {},
+    scenario_responses: {
+      evaluating_new_solution: "批判的に考える。新規性があるかを見る",
+      approval_process: "私がOKすればOK",
+      risk_mitigation: "クライアントがいれば謝罪・対応報告して修正対応する"
+    },
     network: {
-      communities: [],
-      influencers: [],
-      decision_partners: []
+      communities: ["AI界隈"],
+      influencers: ["アラン・ケイ", "ピーター・ティール"],
+      decision_partners: ["自分"]
     },
+    future_outlook: "金持ちにならなくてもいいが、常に大きなことに挑戦していたい。",
+    traits: {
+      innovation_interest: 5,
+      critical_thinking: 5,
+      frugality: 3,
+      empathy: 2,
+      risk_sensitivity: 3
+    },
+    personality_tags: ["ビルダー", "批判的思考"],
+    createdAt: "2024-05-02T09:00:00.000Z",
+    updatedAt: "2024-05-28T09:00:00.000Z"
+  },
+  {
+    id: "persona-kosuge-shuji",
+    persona_name: "小菅 秀二",
+    age_range: "20代",
+    occupation: "SESエンジニア",
+    seniority: "フリーター",
+    location: "東京都",
+    role_context: "受託案件の開発実装を担当。",
+    mission: "夢をみる",
+    decision_authority: "価値に見合った金額",
+    environment: "SES、10名弱規模",
+    decision_style: "慎重型",
+    background_summary: "私立高校中退、通信制高校卒業後、フリーターとして開発に従事。",
+    values: ["面白い方へ"],
+    motivations: ["特化型になりたい"],
+    success_metrics: ["マイナスを覆せるほどの強さを持っているか"],
+    pain_points: ["考えすぎて思い切りが弱い"],
+    buying_triggers: ["文句が出ないほどの完璧さ"],
+    objections: ["後手に回る"],
+    behavior_insights: {
+      routines: "仕事",
+      research_channels: ["X"],
+      tools: ["ChatGPT", "Cursor"],
+      budget_range: "月額1〜20万円",
+      decision_timeframe: "完璧な結論が出てから"
+    },
+    scenario_responses: {
+      evaluating_new_solution: "感動する",
+      approval_process: "チームで話し合ってCEOが決定",
+      risk_mitigation: "できる範囲を即対応して時間に余裕を作り、大きいところを対応する"
+    },
+    network: {
+      communities: ["二郎界隈"],
+      influencers: ["いろんな人のいいと思ったところをいただく"],
+      decision_partners: ["チームメンバー全員"]
+    },
+    future_outlook: "スーパーエンジニアとして活躍することを目指す。",
     traits: {
       innovation_interest: 5,
       critical_thinking: 4,
-      frugality: 4,
+      frugality: 2,
       empathy: 3,
-      risk_sensitivity: 4
+      risk_sensitivity: 5
     },
-    personality_tags: ["イノベーティブ", "堅実志向", "洞察型"],
-    createdAt: "2024-01-04T09:00:00.000Z",
-    updatedAt: "2024-01-04T09:00:00.000Z"
+    personality_tags: ["慎重派", "職人肌"],
+    createdAt: "2024-05-03T09:00:00.000Z",
+    updatedAt: "2024-05-28T09:00:00.000Z"
+  },
+  {
+    id: "persona-kosuge-taihei",
+    persona_name: "小菅 太平",
+    age_range: "20代",
+    occupation: "SES会社代表",
+    seniority: "自営業",
+    location: "東京都",
+    role_context: "CEOとして組織運営とクライアント管理を担う。",
+    mission: "会社の成長に責任を持つ",
+    decision_authority: "50万",
+    environment: "SES、10名弱規模",
+    decision_style: "計画型",
+    background_summary: "都立高校、早稲田理工卒業。2回留年を経て大学院進学予定で学生起業。",
+    values: ["好奇心を満たす"],
+    motivations: ["好奇心を最大限満たしたい"],
+    success_metrics: ["新しい学びがあったか"],
+    pain_points: ["羽ばたきが我慢できない、生き急いでしまう"],
+    buying_triggers: ["定性的・定量的な側面を総合し経営的メリットがあるか"],
+    objections: ["予算不足"],
+    behavior_insights: {
+      routines: "仕事、勉強、飲み会",
+      research_channels: ["読書", "X"],
+      tools: ["ChatGPT", "Canva"],
+      budget_range: "月額1〜20万円",
+      decision_timeframe: "1週間から1ヶ月程度"
+    },
+    scenario_responses: {
+      evaluating_new_solution: "ポジティブな側面ばかり見る",
+      approval_process: "役員会議で決定",
+      risk_mitigation: "落ち着くことを意識する"
+    },
+    network: {
+      communities: ["２留界隈"],
+      influencers: ["実業家", "少年漫画の主人公"],
+      decision_partners: ["役員"]
+    },
+    future_outlook: "会社の急成長により環境は大きく変化すると見込む。",
+    traits: {
+      innovation_interest: 3,
+      critical_thinking: 2,
+      frugality: 2,
+      empathy: 5,
+      risk_sensitivity: 3
+    },
+    personality_tags: ["好奇心旺盛", "共感型"],
+    createdAt: "2024-05-04T09:00:00.000Z",
+    updatedAt: "2024-05-28T09:00:00.000Z"
   }
 ];
 
@@ -698,7 +824,8 @@ async function simulateWithOpenAIInternal(
     return [];
   }
 
-  const systemPrompt = "You are an experienced product analyst. Respond strictly in JSON.";
+  const systemPrompt =
+    "You are an experienced product analyst. Respond strictly in JSON and ensure every string value is written in natural Japanese.";
 
   const userPayload = {
     request: req,
@@ -729,7 +856,7 @@ async function simulateWithOpenAIInternal(
     }))
   };
 
-  const userPrompt = `Provide simulation results for each idea. Use this schema:
+  const userPrompt = `Provide simulation results for each idea. All string fields (comment, summary, tags) must be written in Japanese. Use this schema:
 
 {
   "results": [
