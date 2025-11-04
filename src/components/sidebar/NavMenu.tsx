@@ -17,7 +17,7 @@ const NAV_ITEMS = [
 ] as const;
 
 export const NavMenu = () => {
-  const pathname = usePathname() ?? "";
+  const pathname = usePathname();
   const { currentProject } = useProjectStore();
 
   return (
