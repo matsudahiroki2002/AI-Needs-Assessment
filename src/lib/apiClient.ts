@@ -145,6 +145,39 @@ const slugify = (input: string) => {
   return base || `project-${Math.random().toString(36).slice(2, 8)}`;
 };
 
+const clonePersonaProfile = (persona: PersonaProfile): PersonaProfile =>
+  JSON.parse(JSON.stringify(persona)) as PersonaProfile;
+
+export const upsertPersonaProfileLocal = (persona: PersonaProfile): PersonaProfile => {
+  const next: PersonaProfile = clonePersonaProfile({
+    ...persona,
+    createdAt: persona.createdAt ?? new Date().toISOString(),
+    updatedAt: persona.updatedAt ?? new Date().toISOString()
+  });
+  const index = personaRegistryStore.findIndex((item) => item.id === next.id);
+  if (index >= 0) {
+    personaRegistryStore[index] = next;
+  } else {
+    personaRegistryStore.unshift(next);
+  }
+  return next;
+};
+
+export const createPersonaProfileLocal = (
+  input: Omit<PersonaProfile, "id" | "createdAt" | "updatedAt">
+): PersonaProfile => {
+  const now = new Date().toISOString();
+  const persona: PersonaProfile = {
+    id: generateId("persona"),
+    createdAt: now,
+    updatedAt: now,
+    ...input
+  };
+  return upsertPersonaProfileLocal(persona);
+};
+
+export const getPersonaProfilesLocal = () => personaRegistryStore.map((persona) => clonePersonaProfile(persona));
+
 const getApiBaseUrl = () => {
   const base =
     process.env.NEXT_PUBLIC_API_BASE_URL ||
@@ -413,7 +446,23 @@ export const api = {
       return payload as PersonaProfile[];
     }
 
-    return simulateNetwork([...personaRegistryStore], signal);
+    if (typeof window !== "undefined") {
+      try {
+        const response = await fetch("/api/personas", {
+          signal
+        });
+        if (response.ok) {
+          const payload = (await response.json()) as PersonaProfile[];
+          payload.forEach((persona) => upsertPersonaProfileLocal(persona));
+          return payload;
+        }
+        console.warn("[personas] /api/personas returned", response.status, await response.text());
+      } catch (error) {
+        console.warn("[personas] /api/personas request failed", error);
+      }
+    }
+
+    return simulateNetwork(getPersonaProfilesLocal(), signal);
   },
   async createPersonaProfile(
     input: Omit<PersonaProfile, "id" | "createdAt" | "updatedAt">,
@@ -433,14 +482,20 @@ export const api = {
       return payload as PersonaProfile;
     }
 
-    const now = new Date().toISOString();
-    const persona: PersonaProfile = {
-      id: generateId("persona"),
-      createdAt: now,
-      updatedAt: now,
-      ...input
-    };
-    personaRegistryStore.push(persona);
+    const persona = createPersonaProfileLocal(input);
+
+    if (typeof window !== "undefined") {
+      void fetch("/api/personas", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(persona)
+      }).catch((error) => {
+        console.warn("[personas] Failed to sync persona to API route", error);
+      });
+    }
+
     return simulateNetwork(persona, signal);
   },
   async getRagDocs(
@@ -757,7 +812,17 @@ ${JSON.stringify(userPayload, null, 2)}
     const revenueForecast = sanitizeRevenueForecast(entry.revenue_forecast, fallbackScore.revenue_forecast);
     const improvementSuggestions = sanitizeStringArray(entry.improvement_suggestions, fallbackScore.improvement_suggestions);
 
-    const personaReactions: SimulationPersonaReaction[] = Array.isArray(entry.personaReactions)
+    const buildFallbackReactions = () =>
+      personas.slice(0, 3).map((persona) => ({
+        personaId: persona.id,
+        personaName: persona.persona_name,
+        category: `${persona.age_range} / ${persona.occupation}`,
+        comment: `${persona.persona_name}は提案に興味を示しています。価格と導入効果の明確化が意思決定の鍵になりそうです。`,
+        intent_to_try: 0.54,
+        price_acceptance: 0.48
+      }));
+
+    const personaReactions: SimulationPersonaReaction[] = Array.isArray(entry.personaReactions) && entry.personaReactions.length > 0
       ? entry.personaReactions.map((reaction: any, index: number) => {
           const fallbackPersona = personas[index] ?? personas[0];
           return {
@@ -769,14 +834,7 @@ ${JSON.stringify(userPayload, null, 2)}
             price_acceptance: clampProbability(reaction.price_acceptance ?? reaction.price ?? 0.5)
           };
         })
-      : personas.slice(0, 3).map((persona) => ({
-          personaId: persona.id,
-          personaName: persona.persona_name,
-          category: `${persona.age_range} / ${persona.occupation}`,
-          comment: `${persona.persona_name}は提案に興味を示しています。価格と導入効果の明確化が意思決定の鍵になりそうです。`,
-          intent_to_try: 0.54,
-          price_acceptance: 0.48
-        }));
+      : buildFallbackReactions();
 
     const timestamp = new Date().toISOString();
     personaReactions.forEach((reaction) => {
@@ -792,7 +850,7 @@ ${JSON.stringify(userPayload, null, 2)}
         createdAt: timestamp,
         segment: req.filters?.segment ?? idea.target
       });
-      });
+    });
     if (reactionStore.length > 50) {
       reactionStore.splice(50);
     }
