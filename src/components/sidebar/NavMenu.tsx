@@ -25,7 +25,7 @@ export const NavMenu = () => {
       {NAV_ITEMS.map((item) => {
         const Icon = item.icon;
         const href = `/${currentProject}/${item.href}`;
-        const isActive = pathname.startsWith(href);
+        const isActive = pathname ? pathname.startsWith(href) : false;
 
         return (
           <Link
