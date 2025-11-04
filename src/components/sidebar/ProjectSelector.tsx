@@ -11,7 +11,7 @@ import { useProjectStore } from "@/store/projectStore";
 
 export const ProjectSelector = () => {
   const router = useRouter();
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
   const setToast = useUIStore((state) => state.setToast);
   const { currentProject, setProject, projects, initialized, setProjects, projectLabel } =
     useProjectStore();
